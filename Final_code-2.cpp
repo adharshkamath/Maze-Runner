@@ -34,27 +34,39 @@ void troll(){
     while(k<3){
 	    i=X[k];
 	    j=Y[k];
+            //Check if the troll is next to the player
 	    if(maze[Y[k]-1][X[k]]=='@')    Y[k]=Y[k]-1;
 	    else if(maze[Y[k]+1][X[k]]=='@')    Y[k]=Y[k]+1;
 	    else if(maze[Y[k]][X[k]+1]=='@')    X[k]=X[k]+1;
 	    else if(maze[Y[k]][X[k]-1]=='@')    X[k]=X[k]-1;
 	    else{
-				int p=1,q=1,m,n;
-				if(X[k]>x)   p=-1;
-				if(Y[k]>y)   q=-1;
-        if(abs(X[k]-x)<abs(Y[k]-y)){
-				   if(maze[Y[k]][X[k]+p]==' ')  X[k]=X[k]+p;
-					 else if(maze[Y[k]+q][X[k]]==' ')  Y[k]=Y[k]+q;
-					 else if(maze[Y[k]][X[k]-p]==' ')  X[k]=X[k]-p;
-					 else Y[k]=Y[k]-q;
-				}
-				else {
-				   if(maze[Y[k]+q][X[k]]==' ') Y[k]=Y[k]+q; 
-					 else if(maze[Y[k]][X[k]+p]==' ')  X[k]=X[k]+p;
-					 else if(maze[Y[k]-q][X[k]]==' ')  Y[k]=Y[k]-q; 
-					 else X[k]=X[k]-p;
-				}
-			} 
+		int p=1,q=1,m,n;
+                //Assign p and q values to in according to the position(left, top, bottom, right) of the troll w.r.t. player
+		if(X[k]>x)   p=-1;
+		if(Y[k]>y)   q=-1;
+                //Check if the troll and the player are in same line
+                if(X[k]==x){     if(maze[Y[k]+q][X[k]]==' ')  Y[k]=Y[k]+q; }   
+                else if(Y[k]==y){     if(maze[Y[k]][X[k]+p]==' ')  X[k]=X[k]+p; } 
+                //Check in which direction is the troll near to the player
+                else if(abs(X[k]-x)<abs(Y[k]-y)){   
+                       /* If the troll is near to the player in x-direction, first see if the troll could be moved to that position.
+                       If no, then try in y-direction. If both does not satisify, then find for x and y direction in opposite side. 
+                       */
+			if(maze[Y[k]][X[k]+p]==' ')  X[k]=X[k]+p;   //Check for the most feasible move
+			else if(maze[Y[k]+q][X[k]]==' ')  Y[k]=Y[k]+q;
+			else if(maze[Y[k]][X[k]-p]==' ')  X[k]=X[k]-p;
+			else Y[k]=Y[k]-q;
+		}
+		else {
+                       /* If the troll is near to the player in y-direction, first see if the troll could be moved to that position.
+                       If no, then try in x-direction. If both does not satisify, then find for x and y direction in opposite side. 
+                       */
+		    if(maze[Y[k]+q][X[k]]==' ') Y[k]=Y[k]+q; 
+		    else if(maze[Y[k]][X[k]+p]==' ')  X[k]=X[k]+p;
+		    else if(maze[Y[k]-q][X[k]]==' ')  Y[k]=Y[k]-q; 
+		    else X[k]=X[k]-p;
+		}
+	  } 
 	  maze[Y[k]][X[k]]='*';
 	  maze[j][i]=' ';
 	  k++;
@@ -84,7 +96,7 @@ void setup(){                         //Function to set the position of the play
 	  printf("\n");
     }
 }
-void game_loop(){                                      //Function to start the real game:)
+void game_loop(){                                      //Function to start the real game :)
     char ch;
     int i,j,flag=0,posx=x,posy=y;
     while(maze[y][x]!='X'&&(flag!=2)){                 //To run the game till the player wins or loses
@@ -121,7 +133,7 @@ void game_loop(){                                      //Function to start the r
       }
     }
     system("clear");                              //Clear the screen 
-                                           //Display the message if the player lost or won
+    //Display the message if the player lost or won
     if(flag==2)   printf("YOU LOSE\n");
     else  printf("YOU WIN\n");
 }
@@ -129,8 +141,9 @@ int main(){
    char c;
    system("clear");
    srand(time(0));                         //Make random() function return new value each time it is called
-   printf("Are you ready for the MAZE RUN ???\n");
-   printf("Press any key to start\t");
+   printf("\n\t\t\t\t\t\t       Are you ready for the MAZE RUN ???\n");
+   printf("\n\t\t\t\t\t\t   Moves :  a-left   d-right   w-up   s-down\n");
+   printf("\n\t\t\t\t\t\t           Press any key to start\t");
    c=getchar();
    system("clear");             
    setup();
