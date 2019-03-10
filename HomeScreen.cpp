@@ -77,7 +77,7 @@ int width = 1024;
 int height = 768;
 
 
-int main(int arg, char** argv) {
+int main(int argc, char** argv) {
   glutInit(&argc, argv);
   glutInitWindowSize(400, 400);
   glutInitWindowPosition(50, 50);
