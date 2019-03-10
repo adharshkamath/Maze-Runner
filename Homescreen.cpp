@@ -30,9 +30,12 @@ void renderbitmap(float x, float y, void *font, char *string){
   }
 }
 
-void introscreen(){
-//  glColor3f(1.f,1.f,1.f);
-  //glClear(GL_COLOR_BUFFER_BIT);
+//display function
+void display()
+{
+ glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT);
+
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
   char buf1[]="Hello! Welcome to Maze Runner!.";
@@ -42,15 +45,7 @@ void introscreen(){
   char buf3[]="Press Enter to start the game!. All the best!";
   renderbitmap(-80,20,GLUT_BITMAP_HELVETICA_18,buf3);
 
-}
-//display function
-void display()
-{   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
 
-
-
-  introscreen();
   glFlush();
   //  glutPostRedisplay();
 }
@@ -64,7 +59,9 @@ void specialkey(unsigned char key, int x, int y) {
         case 13:
             //Insert CODE FOR STARTING THE GAME
             glutIdleFunc(display);
-            //glBegin(GL_QUADS);              // Each set of 4 vertices form a quad
+            //glBegin(GL_QUADS);
+                  // Each set of 4 vertices form a quad
+                  printf("\n");
 
             glFlush();
             //printf("up %f %f\n", xr, yr);
