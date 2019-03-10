@@ -39,14 +39,25 @@ void troll(){
 	    else if(maze[Y[k]+1][X[k]]=='@')    Y[k]=Y[k]+1;
 	    else if(maze[Y[k]][X[k]+1]=='@')    X[k]=X[k]+1;
 	    else if(maze[Y[k]][X[k]-1]=='@')    X[k]=X[k]-1;
+	    else if(maze[Y[k]][X[k]]=='@')  continue; 
 	    else{
-		int p=1,q=1,m,n;
+		int p=1,q=1;
                 //Assign p and q values to in according to the position(left, top, bottom, right) of the troll w.r.t. player
 		if(X[k]>x)   p=-1;
 		if(Y[k]>y)   q=-1;
                 //Check if the troll and the player are in same line
-                if(X[k]==x){     if(maze[Y[k]+q][X[k]]==' ')  Y[k]=Y[k]+q; }   
-                else if(Y[k]==y){     if(maze[Y[k]][X[k]+p]==' ')  X[k]=X[k]+p; } 
+                if(X[k]==x){     
+                    if(maze[Y[k]+q][X[k]]==' ')  Y[k]=Y[k]+q; 
+		    else if(maze[Y[k]-q][X[k]]==' ')  Y[k]=Y[k]-q; 
+		    else if(maze[Y[k]][X[k]+p]==' ')  X[k]=X[k]+p;
+		    else if(maze[Y[k]][X[k]-p]==' ')  X[k]=X[k]-p; 
+                }
+                else if(Y[k]==y){    
+                        if(maze[Y[k]][X[k]+p]==' ')  X[k]=X[k]+p;  
+		        else if(maze[Y[k]][X[k]-p]==' ')  X[k]=X[k]-p;
+		        else if(maze[Y[k]+q][X[k]]==' ')  Y[k]=Y[k]+q;
+		        else if(maze[Y[k]-q][X[k]]==' ')  Y[k]=Y[k]-q;
+                }
                 //Check in which direction is the troll near to the player
                 else if(abs(X[k]-x)<abs(Y[k]-y)){   
                        /* If the troll is near to the player in x-direction, first see if the troll could be moved to that position.
@@ -55,20 +66,20 @@ void troll(){
 			if(maze[Y[k]][X[k]+p]==' ')  X[k]=X[k]+p;   //Check for the most feasible move
 			else if(maze[Y[k]+q][X[k]]==' ')  Y[k]=Y[k]+q;
 			else if(maze[Y[k]][X[k]-p]==' ')  X[k]=X[k]-p;
-			else Y[k]=Y[k]-q;
+			else if(maze[Y[k]-q][X[k]]==' ')  Y[k]=Y[k]-q;
 		}
-		else {
+		else{
                        /* If the troll is near to the player in y-direction, first see if the troll could be moved to that position.
                        If no, then try in x-direction. If both does not satisify, then find for x and y direction in opposite side. 
                        */
 		    if(maze[Y[k]+q][X[k]]==' ') Y[k]=Y[k]+q; 
 		    else if(maze[Y[k]][X[k]+p]==' ')  X[k]=X[k]+p;
 		    else if(maze[Y[k]-q][X[k]]==' ')  Y[k]=Y[k]-q; 
-		    else X[k]=X[k]-p;
+		    else if(maze[Y[k]][X[k]-p]==' ')  X[k]=X[k]-p;
 		}
 	  } 
-	  maze[Y[k]][X[k]]='*';
 	  maze[j][i]=' ';
+	  maze[Y[k]][X[k]]='*';
 	  k++;
     }
 }
