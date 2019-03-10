@@ -21,8 +21,8 @@ void init()
   glOrtho(-90.0, 100.0, -15.0, 100.0, 0.0, 1.0);
 }
 void renderbitmap(float x, float y, void *font, char *string){
-  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
+//  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+  //glClear(GL_COLOR_BUFFER_BIT);
   char *c;
   glRasterPos2f(x,y);
   for(c=string; *c !='\0';c++){
