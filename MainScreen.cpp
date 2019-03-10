@@ -28,11 +28,11 @@ void renderbitmap(float x, float y, void *font, char *string){
 
 void introscreen(){
   glColor3f(1.f,1.f,1.f);
-  char buf[100]={0};
-  sprintf_s(buf,"Hello! Welcome to the Maze Runner Game!. Instructions: Use the arrow keys to move the character!");
-  renderbitmap(-80,40,GLUT_BITMAP_TIMES_ROMAN_24,buf);
-  sprintf_s(buf,"Press Enter to start the game!. All the best!");
-  renderbitmap(-80,35,GLUT_BITMAP_TIMES_ROMAN_24,buf);
+  //char buf[300]={0};
+  char buf1[]="Hello! Welcome to Maze Runner!.Instructions: Use the arrow keys to move the player!";
+  renderbitmap(-80,40,GLUT_BITMAP_TIMES_ROMAN_24,buf1);
+  char buf2[]={"Press Enter to start the game!. All the best!"};
+  renderbitmap(-80,35,GLUT_BITMAP_TIMES_ROMAN_24,buf2);
 }
 //display function
 void display()
@@ -40,14 +40,29 @@ void display()
   introscreen();
   glFlush();
     glutPostRedisplay();
+  }
+
+void specialkey(unsigned char key, int x, int y) {
+
+  //this part is a bit messy. the others need to contribute here. It's the enter key handler function.
+
+    switch(key) {
+        case 32:
+            //Insert CODE FOR STARTING THE GAME
+            glutIdleFunc(display);
+            //printf("up %f %f\n", xr, yr);
+            break;
+        default:
+            break;
+    }
+    //glutPostRedisplay();
+    //glFlush();
 }
-//setting up intro introscreen
 
 
-//Now we make renderbitmap
 
-int width = 480;
-int height = 640;
+int width = 1024;
+int height = 768;
 
 int main(int arg, char** argv) {
    glutInit(&arg, argv);          // Initialize GLUT
@@ -57,7 +72,8 @@ int main(int arg, char** argv) {
    glutCreateWindow("Welcome to Maze Runner!");  // Create window with the given title
    init();
    glutDisplayFunc(display);       // Register callback handler for window re-paint event
-   //initGL();                       // Our own OpenGL initialization
+   //initGL();
+   glutKeyboardFunc(specialkey);         // Our own OpenGL initialization
    glutMainLoop();                 // Enter the event-processing loop
    return 0;
 }
