@@ -8,46 +8,47 @@
 #define TROLL_NUMBER 3
 #define MAX_WEAPONS 2
 #define MAX_SPEEDBOOSTERS 1
+#define PHASABLE_BLOCKS 3
 
 using namespace std;
 
 int GameCompletion = 0, WindowID;
 
 char maze[35][56]={  
-{"#######################################################"},
-{"#  #           #           #        #              #  #"},
-{"#  #           #           #        #              #  #"},
-{"#  #  #######  #  ####  #######  ####  ####  ####  #  #"},
-{"#           #     #  #        #        #  #  #     #  #"},
-{"#           #     #  #        #        #  #  #     #  #"},
-{"#######  #  #######  #######  ####  #  #  #  #######  #"},
-{"#     #  #           #        #  #  #  #  #        #  #"},
-{"#     #  #           #        #  #  #  #  #        #  #"},
-{"#  #  ##########  #  #  #######  ####  #  #######  #  #"},
-{"#  #           #  #  #     #        #        #     #  #"},
-{"#  #           #  #  #     #        #        #     #  #"},
-{"#  ##########  ####  ####  #  ####  #######  #  ####  #"},
-{"#        #     #  #     #  #     #        #  #        #"},
-{"#        #     #  #     #  #     #        #  #        #"},
-{"#  ####  ####  #  ####  #  #######  #  #  #  ##########"},
-{"#     #     #  #  #     #     #     #  #  #     #     #"},
-{"#     #     #  #  #     #     #     #  #  #     #     #"},
-{"##########  #  #  #  #######  #  ####  #  ####  ####  #"},
-{"#        #  #        #     #  #     #  #     #        #"},
-{"#        #  #        #     #  #     #  #     #        #"},
-{"#  ####  #  #######  ####  #  ####  ####  ##########  #"},
-{"#  #     #        #        #     #  #  #           #  #"},
-{"#  #     #        #        #     #  #  #           #  #"},
-{"#  #  #######  #  ####  #######  #  #  ##########  #  #"},
-{"#  #        #  #  #  #  #        #           #  #     #"},
-{"#  #        #  #  #  #  #        #           #  #     #"},
-{"#  #######  #  #  #  ####  #######  #######  #  #######"},
-{"#  #     #  #  #        #        #  #     #           #"},
-{"#  #     #  #  #        #        #  #     #           #"},
-{"#  #  ####  ####  ####  #######  ####  #  #######  #  #"},
-{"#  #              #        #           #           #  #"},
-{"#  #              #        #           #           #  #"},
-{"#XX####################################################"} };  
+{"+++++++++++++++++++++++++++++++++++++++++++++++++++++++"},
+{"+  #           #           #        #              #  +"},
+{"+  #           #           #        #              #  +"},
+{"+  #  #######  #  ####  #######  ####  ####  ####  #  +"},
+{"+           #     #  #        #        #  #  #     #  +"},
+{"+           #     #  #        #        #  #  #     #  +"},
+{"+######  #  #######  #######  ####  #  #  #  #######  +"},
+{"+     #  #           #        #  #  #  #  #        #  +"},
+{"+     #  #           #        #  #  #  #  #        #  +"},
+{"+  #  ##########  #  #  #######  ####  #  #######  #  +"},
+{"+  #           #  #  #     #        #        #     #  +"},
+{"+  #           #  #  #     #        #        #     #  +"},
+{"+  ##########  ####  ####  #  ####  #######  #  ####  +"},
+{"+        #     #  #     #  #     #        #  #        +"},
+{"+        #     #  #     #  #     #        #  #        +"},
+{"+  ####  ####  #  ####  #  #######  #  #  #  #########+"},
+{"+     #     #  #  #     #     #     #  #  #     #     +"},
+{"+     #     #  #  #     #     #     #  #  #     #     +"},
+{"+#########  #  #  #  #######  #  ####  #  ####  ####  +"},
+{"+        #  #        #     #  #     #  #     #        +"},
+{"+        #  #        #     #  #     #  #     #        +"},
+{"+  ####  #  #######  ####  #  ####  ####  ##########  +"},
+{"+  #     #        #        #     #  #  #           #  +"},
+{"+  #     #        #        #     #  #  #           #  +"},
+{"+  #  #######  #  ####  #######  #  #  ##########  #  +"},
+{"+  #        #  #  #  #  #        #           #  #     +"},
+{"+  #        #  #  #  #  #        #           #  #     +"},
+{"+  #######  #  #  #  ####  #######  #######  #  ######+"},
+{"+  #     #  #  #        #        #  #     #           +"},
+{"+  #     #  #  #        #        #  #     #           +"},
+{"+  #  ####  ####  ####  #######  ####  #  #######  #  +"},
+{"+  #              #        #           #           #  +"},
+{"+  #              #        #           #           #  +"},
+{"+XX++++++++++++++++++++++++++++++++++++++++++++++++++++"} };  
 
 
 void display_LOSE()
@@ -287,10 +288,43 @@ class Weapon
 };
 
 
+class PhasableBlock
+{
+    public:
+    int locationX, locationY;
+    PhasableBlock()
+    {
+        srand(time(NULL)); 
+        while(1)
+        {
+                  locationX = rand()%55; 
+                  locationY = rand()%34;
+                  if( maze[locationY][locationX] == '#' && ((maze[locationY][locationX - 1] == '#' && maze[locationY][locationX + 1] == '#') || (maze[locationY - 1][locationX] == '#' && maze[locationY + 1][locationX] == '#')))
+                  break;
+                  else
+                  continue;
+                  
+        }
+          maze[locationY][locationX] = '!';
+          
+    }
+    static void Display(float beginX, float beginY, float blockWidth, float blockHeight)
+    {
+        glBegin(GL_QUADS);
+         glColor3f(0.3f,0.45f,0.45f);
+         glVertex2f(beginX + blockWidth , beginY);
+         glVertex2f(beginX , beginY);
+         glVertex2f(beginX , beginY - blockHeight);
+         glVertex2f(beginX + blockWidth , beginY - blockHeight);
+        glEnd();
+    }
+};
+
 Player P;
 Troll T[TROLL_NUMBER];
 Weapon W[MAX_WEAPONS];
 SpeedBooster S[MAX_SPEEDBOOSTERS];
+PhasableBlock Ph[PHASABLE_BLOCKS];
 int trollFrameCount = 0;
 
 
@@ -334,10 +368,10 @@ void troll()
                        /* If the troll is near to the player in x-direction, first see if the troll could be moved to that position.
                        If no, then try in y-direction. If both does not satisify, then find for x and y direction in opposite side. 
                        */
-			        if(maze[ T[k].locationY ][ T[k].locationX + p]==' ')   T[k].locationX = T[k].locationX +p;   //Check for the most feasible move
-			        else if(maze[ T[k].locationY + q][ T[k].locationX ]==' ')   T[k].locationY = T[k].locationY +q;
-			        else if(maze[ T[k].locationY ][ T[k].locationX - p]==' ')   T[k].locationX = T[k].locationX -p;
-			        else if(maze[ T[k].locationY - q][ T[k].locationX ]==' ')   T[k].locationY = T[k].locationY -q;
+			        if(maze[ T[k].locationY ][ T[k].locationX + p]==' ')   T[k].locationX = T[k].locationX + p;   //Check for the most feasible move
+			        else if(maze[ T[k].locationY + q][ T[k].locationX ]==' ')   T[k].locationY = T[k].locationY + q;
+			        else if(maze[ T[k].locationY ][ T[k].locationX - p]==' ')   T[k].locationX = T[k].locationX - p;
+			        else if(maze[ T[k].locationY - q][ T[k].locationX ]==' ')   T[k].locationY = T[k].locationY - q;
 		        }
 		        else
                 {
@@ -381,12 +415,13 @@ void display_maze()
     double blockHeight = 1.5 / 34.0 ;  
     float beginX = -0.9f;
     float beginY = 0.725f;
-   
+
+    int counter = 0;
     for(int i = 0; i < 34; i++)
     {
         for(int j = 0; j < 55; j++)
         {
-            if(maze[i][j] == '#')
+            if(maze[i][j] == '#' || maze[i][j] == '+' )
             {
                 glBegin(GL_QUADS);
                    glColor3f(1.0f, 1.0f, 1.0f); 
@@ -397,7 +432,7 @@ void display_maze()
                 glEnd();
             }
             
-            if(maze[i][j] == '@')
+            else if(maze[i][j] == '@')
             {
                 P.Display(beginX, beginY, blockWidth, blockHeight);                
             } 
@@ -412,19 +447,6 @@ void display_maze()
                    glVertex2f(beginX + blockWidth , beginY - blockHeight);                 
                 glEnd();
             }
-
-            else if(maze[i][j] == 'X')
-            {
-                glBegin(GL_QUADS);
-                   glColor3f(0.0f, 0.0f, 0.0f); 
-                   glVertex2f(beginX + blockWidth , beginY);
-                   glVertex2f(beginX , beginY);
-                   glVertex2f(beginX , beginY - blockHeight);
-                   glVertex2f(beginX + blockWidth , beginY - blockHeight);                 
-                glEnd();
-            }
-
-            
 
             else if(maze[i][j] == '*')
             {
@@ -441,11 +463,18 @@ void display_maze()
                 SpeedBooster::Display(beginX, beginY, blockWidth, blockHeight);                 
             }
 
+            else if(maze[i][j] == '!')
+            {
+                PhasableBlock::Display(beginX, beginY, blockWidth, blockHeight);
+                
+            }
+            
             beginX += blockWidth;
         }
         beginY -= blockHeight;
         beginX = -0.9f;
     }
+    counter = 0;
     glFlush();
     specialTroll();
     
@@ -486,6 +515,13 @@ void specialkey_playing(int key, int xr, int yr)
                 maze[ P.locationY ][ P.locationX ] = '@';
                 Player::SpeedBoost = 1;
             }
+        else if(maze[P.locationY - 1][ P.locationX ] == '!' )
+           {
+               maze[ P.locationY ][ P.locationX ] = ' ';
+               maze[ P.locationY - 1][ P.locationX ] = '#';
+               P.locationY -= 2;
+               maze[ P.locationY ][ P.locationX ] = '@';
+           }
         else if(maze[ P.locationY - 1 ][ P.locationX ] == ' ' )
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
@@ -528,6 +564,13 @@ void specialkey_playing(int key, int xr, int yr)
                 maze[ P.locationY ][ P.locationX ] = '@';
                 Player::SpeedBoost = 1;
             }
+        else if(maze[P.locationY + 1][ P.locationX ] == '!' )
+           {
+               maze[ P.locationY ][ P.locationX ] = ' ';
+               maze[ P.locationY + 1][ P.locationX ] = '#';
+               P.locationY += 2;
+               maze[ P.locationY ][ P.locationX ] = '@';
+           }
         else if(maze[ P.locationY + 1 ][ P.locationX ] == ' ')
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
@@ -564,6 +607,13 @@ void specialkey_playing(int key, int xr, int yr)
                 maze[ P.locationY ][ P.locationX ] = '@';
                 Player::SpeedBoost = 1;
             }
+        else if(maze[P.locationY ][ P.locationX - 1] == '!' )
+           {
+               maze[ P.locationY ][ P.locationX ] = ' ';
+               maze[ P.locationY ][ P.locationX - 1 ] = '#';
+               P.locationX -= 2;
+               maze[ P.locationY ][ P.locationX ] = '@';
+           }
         else if(maze[ P.locationY ][ P.locationX -1] == ' ')
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
@@ -600,6 +650,13 @@ void specialkey_playing(int key, int xr, int yr)
                 maze[ P.locationY ][ P.locationX ] = '@';
                 Player::SpeedBoost = 1;
             }
+        else if(maze[P.locationY ][ P.locationX + 1] == '!' )
+           {
+               maze[ P.locationY ][ P.locationX ] = ' ';
+               maze[ P.locationY ][ P.locationX + 11] = '#';
+               P.locationX += 2;
+               maze[ P.locationY ][ P.locationX ] = '@';
+           }
         else if(maze[ P.locationY ][ P.locationX +1] == ' ' )
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
@@ -663,7 +720,7 @@ void KeyboardFunction(unsigned char key, int xr, int yr)
 int main(int argc, char** argv)
 {
     srand(time(NULL));
-
+    
     glutInit(&argc, argv); 
     
     WindowID = glutCreateWindow("Maze Runner");
