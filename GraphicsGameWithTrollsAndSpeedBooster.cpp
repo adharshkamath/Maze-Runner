@@ -299,7 +299,7 @@ class PhasableBlock
         {
                   locationX = rand()%55; 
                   locationY = rand()%34;
-                  if( maze[locationY][locationX] == '#' && ((maze[locationY][locationX - 1] == '#' && maze[locationY][locationX + 1] == '#') || (maze[locationY - 1][locationX] == '#' && maze[locationY + 1][locationX] == '#')))
+                  if( maze[locationY][locationX] == '#' && ((maze[locationY][locationX - 1] == '#' && maze[locationY][locationX + 1] == '#' && maze[locationY - 1][locationX] == ' ' && maze[locationY + 1][locationX] == ' ') || (maze[locationY - 1][locationX] == '#' && maze[locationY + 1][locationX] == '#' && maze[locationY][locationX - 1] == ' ' && maze[locationY][locationX + 1] == ' ')))
                   break;
                   else
                   continue;
