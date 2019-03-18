@@ -9,6 +9,7 @@
 #define MAX_WEAPONS 2
 #define MAX_SPEEDBOOSTERS 1
 #define PHASABLE_BLOCKS 3
+#define FIERY_BLOCKS 3
 
 using namespace std;
 
@@ -53,8 +54,9 @@ char maze[35][56]={
 
 void display_LOSE()
 {
-    glClearColor(0.25f, 0.25f, 0.25f, 1.0f);  
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);  
     glClear(GL_COLOR_BUFFER_BIT);
+    glColor3f(1.0f, 1.0f, 1.0f);
    glBegin(GL_LINE_STRIP);
       glColor3f(1.0f, 1.0f, 1.0f); 
       glVertex2f(0.125f, -0.25f);
@@ -101,8 +103,9 @@ void display_LOSE()
 
 void display_WIN()
 {
-    glClearColor(0.250f, 0.250f, 0.250f, 1.0f);  
+    glClearColor(0.20f, 0.20f, 0.20f, 1.0f);  
     glClear(GL_COLOR_BUFFER_BIT);
+    glColor3f(1.0f, 1.0f, 1.0f);
    glBegin(GL_LINE_STRIP);
       glColor3f(1.0f, 1.0f, 1.0f); 
       glVertex2f(0.15f, -0.25f);
@@ -320,11 +323,80 @@ class PhasableBlock
     }
 };
 
+
+class FieryBlock
+{
+    public:
+    int locationX, locationY;
+    FieryBlock()
+    {
+        srand(time(NULL)); 
+        while(1)
+        {
+                  locationX = rand()%55; 
+                  locationY = rand()%34;
+                  if( maze[locationY][locationX] == '#' && ((maze[locationY][locationX - 1] == '#' && maze[locationY][locationX + 1] == '#' && maze[locationY - 1][locationX] == ' ' && maze[locationY + 1][locationX] == ' ') || (maze[locationY - 1][locationX] == '#' && maze[locationY + 1][locationX] == '#' && maze[locationY][locationX - 1] == ' ' && maze[locationY][locationX + 1] == ' ')))
+                  break;
+                  else
+                  continue;
+                  
+        }
+          maze[locationY][locationX] = 'F';
+          if(maze[locationY][locationX - 1] == '#')
+          maze[locationY][locationX - 1] = 'F';
+          else if(maze[locationY][locationX + 1] == '#')
+          maze[locationY][locationX + 1] = 'F';
+          else if(maze[locationY - 1][locationX] == '#')
+          maze[locationY - 1][locationX] = 'F';
+          else if(maze[locationY + 1][locationX] == '#')
+          maze[locationY + 1][locationX] = 'F';      
+    }
+    static void Display(float beginX, float beginY, float blockWidth, float blockHeight, int i)
+    {
+        static int BlinkArray[2 * FIERY_BLOCKS] = {0};
+        (BlinkArray[i])++;
+        if(BlinkArray[i] == 3)
+        {
+            glBegin(GL_QUADS);
+                glColor3f(0.9882f, 0.4f, 0.0f);
+                glVertex2f(beginX + blockWidth , beginY);
+                glVertex2f(beginX , beginY);
+                glVertex2f(beginX , beginY - blockHeight);
+                glVertex2f(beginX + blockWidth , beginY - blockHeight);
+            glEnd();
+                BlinkArray[i] = 0;
+        }
+        else if(BlinkArray[i] == 2)
+        {
+            glBegin(GL_QUADS);
+                glColor3f(0.97647f, 0.50588f, 0.1647f);
+                glVertex2f(beginX + blockWidth , beginY);
+                glVertex2f(beginX , beginY);
+                glVertex2f(beginX , beginY - blockHeight);
+                glVertex2f(beginX + blockWidth , beginY - blockHeight);
+            glEnd();
+        }
+        else 
+        {
+            glBegin(GL_QUADS);
+                glColor3f(1.0f, 0.0f, 0.0f);
+                glVertex2f(beginX + blockWidth , beginY);
+                glVertex2f(beginX , beginY);
+                glVertex2f(beginX , beginY - blockHeight);
+                glVertex2f(beginX + blockWidth , beginY - blockHeight);
+            glEnd();
+        }
+
+    }
+
+};
+
 Player P;
 Troll T[TROLL_NUMBER];
 Weapon W[MAX_WEAPONS];
 SpeedBooster S[MAX_SPEEDBOOSTERS];
 PhasableBlock Ph[PHASABLE_BLOCKS];
+FieryBlock Fb[FIERY_BLOCKS];
 int trollFrameCount = 0;
 
 
@@ -399,7 +471,7 @@ void specialTroll()
     if(GameBegin == 1)
     {
       trollFrameCount++;
-      if(trollFrameCount == 200)
+      if(trollFrameCount == 175)
       {
         trollFrameCount = 0;
         troll();
@@ -413,7 +485,7 @@ void specialTroll()
 void display_maze()
 {
     
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);  
+    glClearColor(0.05f, 0.05f, 0.05f, 1.0f);  
     glClear(GL_COLOR_BUFFER_BIT);
     glutFullScreen();
     
@@ -421,6 +493,7 @@ void display_maze()
     double blockHeight = 1.5 / 34.0 ;  
     float beginX = -0.9f;
     float beginY = 0.725f;
+    int a = 0;
 
     for(int i = 0; i < 34; i++)
     {
@@ -474,6 +547,11 @@ void display_maze()
                 
             }
 
+            else if(maze[i][j] == 'F')
+            {
+                FieryBlock::Display(beginX, beginY, blockWidth, blockHeight, a); a++;
+            }
+
             
             beginX += blockWidth;
         }
@@ -491,7 +569,14 @@ void specialkey_playing(int key, int xr, int yr)
     switch(key) 
     {
         case GLUT_KEY_UP: 
-        if(maze[ P.locationY - 1 ][ P.locationX ] == ' ' && Player::SpeedBoost == 1 && maze[ P.locationY - 2 ][ P.locationX ] == ' ' && Player::SpeedBoostCount <= MAX_SPEED_BOOST_MOVES)
+        if((maze[ P.locationY - 1 ][ P.locationX ] == ' ' ) && (maze[ P.locationY ][ P.locationX - 2 ] == 'F' || maze[ P.locationY ][ P.locationX - 2 - 1] == 'F' || maze[ P.locationY ][ P.locationX - 2 + 1] == 'F'))
+            {
+                maze[ P.locationY ][ P.locationX ] = ' ';
+                P.locationY -= 1; 
+                maze[ P.locationY ][ P.locationX ] = '@';
+                GameCompletion = -1;
+            }
+        else if(maze[ P.locationY - 1 ][ P.locationX ] == ' ' && Player::SpeedBoost == 1 && maze[ P.locationY ][ P.locationX - 2 ] == ' ' && Player::SpeedBoostCount <= MAX_SPEED_BOOST_MOVES)
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
                 P.locationY -= 2; 
@@ -540,6 +625,13 @@ void specialkey_playing(int key, int xr, int yr)
             maze[ ++P.locationY  ][ P.locationX ] = '@';
             GameCompletion = 1; 
         } 
+        else if((maze[ P.locationY + 1 ][ P.locationX ] == ' ' ) && (maze[ P.locationY + 2 ][ P.locationX ] == 'F' || maze[ P.locationY + 2 ][ P.locationX - 1] == 'F' || maze[ P.locationY + 2 ][ P.locationX + 1] == 'F'))
+            {
+                maze[ P.locationY ][ P.locationX ] = ' ';
+                P.locationY += 1; 
+                maze[ P.locationY ][ P.locationX ] = '@';
+                GameCompletion = -1;
+            }
         else if(maze[ P.locationY + 1 ][ P.locationX ] == ' ' && Player::SpeedBoost == 1 && maze[ P.locationY + 2 ][ P.locationX ] == ' '  && Player::SpeedBoostCount <= MAX_SPEED_BOOST_MOVES)
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
@@ -583,7 +675,14 @@ void specialkey_playing(int key, int xr, int yr)
             }
         break;
         case GLUT_KEY_LEFT: 
-        if(maze[ P.locationY ][ P.locationX  - 1] == ' ' && Player::SpeedBoost == 1 && maze[ P.locationY ][ P.locationX  - 2] == ' '  && Player::SpeedBoostCount <= MAX_SPEED_BOOST_MOVES)
+        if((maze[ P.locationY ][ P.locationX - 1 ] == ' ' ) && (maze[ P.locationY ][ P.locationX - 2 ] == 'F' || maze[ P.locationY - 1][ P.locationX - 2 ] == 'F' || maze[ P.locationY + 1][ P.locationX - 2] == 'F'))
+            {
+                maze[ P.locationY ][ P.locationX ] = ' ';
+                P.locationX -= 1; 
+                maze[ P.locationY ][ P.locationX ] = '@';
+                GameCompletion = -1;
+            }
+        else if(maze[ P.locationY ][ P.locationX  - 1] == ' ' && Player::SpeedBoost == 1 && maze[ P.locationY ][ P.locationX  - 2] == ' '  && Player::SpeedBoostCount <= MAX_SPEED_BOOST_MOVES)
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
                 P.locationX  -= 2; 
@@ -626,7 +725,14 @@ void specialkey_playing(int key, int xr, int yr)
             }
         break;
         case GLUT_KEY_RIGHT: 
-        if(maze[ P.locationY ][ P.locationX  + 1] == ' ' && Player::SpeedBoost == 1 && maze[ P.locationY ][ P.locationX  + 2] == ' '  && Player::SpeedBoostCount <= MAX_SPEED_BOOST_MOVES)
+        if((maze[ P.locationY ][ P.locationX + 1 ] == ' ' ) && (maze[ P.locationY ][ P.locationX + 2 ] == 'F' || maze[ P.locationY - 1][ P.locationX + 2 ] == 'F' || maze[ P.locationY + 1][ P.locationX + 2] == 'F'))
+            {
+                maze[ P.locationY ][ P.locationX ] = ' ';
+                P.locationX += 1; 
+                maze[ P.locationY ][ P.locationX ] = '@';
+                GameCompletion = -1;
+            }
+        else if(maze[ P.locationY ][ P.locationX  + 1] == ' ' && Player::SpeedBoost == 1 && maze[ P.locationY ][ P.locationX  + 2] == ' '  && Player::SpeedBoostCount <= MAX_SPEED_BOOST_MOVES)
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
                 P.locationX  += 2; 
@@ -680,17 +786,17 @@ void renderbitmap(float x, float y, void *font, char *string)
 {
   char *c;
   glRasterPos2f(x,y);
-  for(c=string; *c !='\0';c++)
-  {  
-    glutBitmapCharacter(font,*c);
-  }
+  for( c = string; *c != '\0'; c++)
+    glutBitmapCharacter( font, *c);
+
 }
 
 
 void display_Home()
 {
-  glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+  glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
+  glColor3f(1.0f, 1.0f, 1.0f);
   glutFullScreen();
   char buf1[]="Welcome to Maze Runner!";
   renderbitmap(-0.75f,0.5f,GLUT_BITMAP_9_BY_15,buf1);
