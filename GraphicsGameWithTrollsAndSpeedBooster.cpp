@@ -569,7 +569,7 @@ void specialkey_playing(int key, int xr, int yr)
     switch(key) 
     {
         case GLUT_KEY_UP: 
-        if((maze[ P.locationY - 1 ][ P.locationX ] == ' ' ) && (maze[ P.locationY ][ P.locationX - 2 ] == 'F' || maze[ P.locationY ][ P.locationX - 2 - 1] == 'F' || maze[ P.locationY ][ P.locationX - 2 + 1] == 'F'))
+        if((maze[ P.locationY - 1 ][ P.locationX ] == ' ' ) && (maze[ P.locationY - 2 ][ P.locationX ] == 'F' || maze[ P.locationY - 2 ][ P.locationX - 1] == 'F' || maze[ P.locationY - 2 ][ P.locationX + 1] == 'F'))
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
                 P.locationY -= 1; 
