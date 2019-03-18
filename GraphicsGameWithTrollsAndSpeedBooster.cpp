@@ -12,7 +12,7 @@
 
 using namespace std;
 
-int GameCompletion = 0, WindowID;
+int GameCompletion = 0, WindowID, GameBegin = 0;
 
 char maze[35][56]={  
 {"+++++++++++++++++++++++++++++++++++++++++++++++++++++++"},
@@ -53,7 +53,7 @@ char maze[35][56]={
 
 void display_LOSE()
 {
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);  
+    glClearColor(0.25f, 0.25f, 0.25f, 1.0f);  
     glClear(GL_COLOR_BUFFER_BIT);
    glBegin(GL_LINE_STRIP);
       glColor3f(1.0f, 1.0f, 1.0f); 
@@ -101,7 +101,7 @@ void display_LOSE()
 
 void display_WIN()
 {
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);  
+    glClearColor(0.250f, 0.250f, 0.250f, 1.0f);  
     glClear(GL_COLOR_BUFFER_BIT);
    glBegin(GL_LINE_STRIP);
       glColor3f(1.0f, 1.0f, 1.0f); 
@@ -396,12 +396,18 @@ void troll()
 
 void specialTroll()
 {
-    trollFrameCount++;
-    if(trollFrameCount >= 500000)
-    trollFrameCount %= 500000;
-    if(trollFrameCount == 0)
-    troll();
+    if(GameBegin == 1)
+    {
+      trollFrameCount++;
+      if(trollFrameCount == 200)
+      {
+        trollFrameCount = 0;
+        troll();
+      }
+    }
+   
 }
+
 
 
 void display_maze()
@@ -416,7 +422,6 @@ void display_maze()
     float beginX = -0.9f;
     float beginY = 0.725f;
 
-    int counter = 0;
     for(int i = 0; i < 34; i++)
     {
         for(int j = 0; j < 55; j++)
@@ -468,15 +473,14 @@ void display_maze()
                 PhasableBlock::Display(beginX, beginY, blockWidth, blockHeight);
                 
             }
+
             
             beginX += blockWidth;
         }
         beginY -= blockHeight;
         beginX = -0.9f;
     }
-    counter = 0;
     glFlush();
-    specialTroll();
     
 }
 
@@ -653,7 +657,7 @@ void specialkey_playing(int key, int xr, int yr)
         else if(maze[P.locationY ][ P.locationX + 1] == '!' )
            {
                maze[ P.locationY ][ P.locationX ] = ' ';
-               maze[ P.locationY ][ P.locationX + 11] = '#';
+               maze[ P.locationY ][ P.locationX + 1] = '#';
                P.locationX += 2;
                maze[ P.locationY ][ P.locationX ] = '@';
            }
@@ -672,24 +676,75 @@ void specialkey_playing(int key, int xr, int yr)
 }
 
 
+void renderbitmap(float x, float y, void *font, char *string)
+{
+  char *c;
+  glRasterPos2f(x,y);
+  for(c=string; *c !='\0';c++)
+  {  
+    glutBitmapCharacter(font,*c);
+  }
+}
+
+
+void display_Home()
+{
+  glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT);
+  glutFullScreen();
+  char buf1[]="Welcome to Maze Runner!";
+  renderbitmap(-0.75f,0.5f,GLUT_BITMAP_9_BY_15,buf1);
+  char buf2[]="For the sake of the game, you, my friend, are a weird looking green creature still unknown to mankind and now your task is to get out of the maze you're stuck in ";
+  renderbitmap(-0.75f,0.4f,GLUT_BITMAP_9_BY_15,buf2);
+  char buf3[]="Use the arrow keys to move up, down, right or left ";
+  renderbitmap(-0.75f,0.3f,GLUT_BITMAP_9_BY_15,buf3);
+  char buf4[]="Watch out for the red coloured thingys! They are trolls that try to kill you. (don't let them stop you)";
+  renderbitmap(-0.75f,0.2f,GLUT_BITMAP_9_BY_15,buf4);
+  char buf5[]="There will be a some weapons, colored yellow, and Speed Boosters, colored purple, inside the maze. They are to help you get out of the maze";
+  renderbitmap(-0.75f,0.1f,GLUT_BITMAP_9_BY_15,buf5);
+  char buf6[]="The Speedbooster increases the player's speed. You can use a weapon to kill only one troll (don't be too greedy smh) ";
+  renderbitmap(-0.75f,0.0f,GLUT_BITMAP_9_BY_15,buf6);
+  char buf7[]="At any instant, you can have either a weapon or a speedbooster, but not both";
+  renderbitmap(-0.75f,-0.1f,GLUT_BITMAP_9_BY_15,buf7);
+  char buf8[]="There are certain blocks in the maze that are colored gray. These are phasable walls which you can pass through only once. (kinda like Flash)";
+  renderbitmap(-0.75f,-0.2f,GLUT_BITMAP_9_BY_15,buf8);
+  char buf9[]="Press ENTER to start the game";
+  renderbitmap(-0.75f,-0.3f,GLUT_BITMAP_9_BY_15,buf9);
+  char buf10[]="All the best! :\")";
+  renderbitmap(-0.75f,-0.4f,GLUT_BITMAP_9_BY_15,buf10);
+  char buf11[]="NOTE : Pls dont let us down. Plis. Get out alive.";
+  renderbitmap(-0.75f,-0.5f,GLUT_BITMAP_9_BY_15,buf11);
+  char buf12[]="(Also.. you can press Esc and quit the game anytime)";
+  renderbitmap(-0.75f,-0.6f,GLUT_BITMAP_9_BY_15,buf12);
+  glFlush();
+  glutPostRedisplay();
+}
+
+
 void display()
 {
-    if(GameCompletion == 0)
+    if(GameBegin == 0)
     {
+        display_Home();
+    }
+    else if(GameCompletion == 0 && GameBegin == 1)
+    {
+        glFlush();
+        glutPostRedisplay();
         display_maze();
     }
-    else if(GameCompletion == 1)
+    else if(GameCompletion == 1 && GameBegin == 1)
     {
         glFlush();
         glutPostRedisplay();
-        usleep(500000);
+        usleep(50000);
         display_WIN();
     }
-    else if(GameCompletion == -1)
+    else if(GameCompletion == -1 && GameBegin == 1)
     {
         glFlush();
         glutPostRedisplay();
-        usleep(500000);
+        usleep(50000);
         display_LOSE();
     }
 
@@ -698,8 +753,23 @@ void display()
 
 void specialFunc(int key, int v, int c)
 {
-    if(GameCompletion == 0)
+    if(GameCompletion == 0 && GameBegin == 1)
         specialkey_playing(key,v,c);
+}
+
+
+void processNormalKeysForHome(unsigned char key, int x, int y) 
+{
+     if(key > 0 && key != 27)
+		{
+            GameBegin = 1;
+            glutPostRedisplay();
+            glFlush();
+        }
+     else if(key == 27)
+     {
+         glutDestroyWindow(WindowID);
+     }
 }
 
 
@@ -712,8 +782,9 @@ void processNormalKeys(unsigned char key, int x, int y)
 
 void KeyboardFunction(unsigned char key, int xr, int yr)
 {
-    if(GameCompletion != 0)
-        processNormalKeys(key,xr,yr);
+    processNormalKeysForHome(key,xr,yr);
+    if(GameCompletion != 0 && GameBegin == 1)
+      processNormalKeys(key,xr,yr);
 }
 
 
