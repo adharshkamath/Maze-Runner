@@ -5,11 +5,12 @@
 #include <unistd.h>
 
 #define MAX_SPEED_BOOST_MOVES 15
-#define TROLL_NUMBER 3
+#define TROLL_NUMBER 4
 #define MAX_WEAPONS 2
 #define MAX_SPEEDBOOSTERS 1
 #define PHASABLE_BLOCKS 3
 #define FIERY_BLOCKS 3
+#define TELEPORTATION_STOPS 2
 
 using namespace std;
 
@@ -391,14 +392,106 @@ class FieryBlock
 
 };
 
+
+class Teleport
+{
+    public:
+    int locationXF, locationYF, locationXT, locationYT;
+    Teleport()
+    {
+        srand(time(NULL)); 
+        while(1)
+        {
+                  locationXF = rand()%55; 
+                  locationXT = rand()%55;
+                  locationYF = rand()%34;
+                  locationYT = rand()%34;
+                  if( maze[locationYF][locationXF] == ' ' && maze[locationYT][locationXT] == ' ' && locationYF != locationYT && locationXF != locationXT)
+                  break;
+                  else
+                  continue;
+                  
+        }
+          maze[locationYF][locationXF] = 'T';
+          maze[locationYT][locationXT] = 'T';
+          
+    }
+    static void Display(float beginX, float beginY, float blockWidth, float blockHeight, int i)
+    {
+        static int BlinkArray[2 * TELEPORTATION_STOPS] = {0};
+        (BlinkArray[i])++;
+        if(BlinkArray[i] == 3)
+        {
+            glBegin(GL_QUADS);
+                glColor3f(0.25f, 0.25f, 0.25f);
+                glVertex2f(beginX + blockWidth , beginY);
+                glVertex2f(beginX , beginY);
+                glVertex2f(beginX , beginY - blockHeight);
+                glVertex2f(beginX + blockWidth , beginY - blockHeight);
+            glEnd();
+                BlinkArray[i] = 0;
+        }
+        else if(BlinkArray[i] == 2)
+        {
+            glBegin(GL_QUADS);
+                glColor3f(0.35f, 0.35f, 0.35f);
+                glVertex2f(beginX + blockWidth , beginY);
+                glVertex2f(beginX , beginY);
+                glVertex2f(beginX , beginY - blockHeight);
+                glVertex2f(beginX + blockWidth , beginY - blockHeight);
+            glEnd();
+        }
+        else 
+        {
+            glBegin(GL_QUADS);
+                glColor3f(0.3f, 0.3f, 0.3f);
+                glVertex2f(beginX + blockWidth , beginY);
+                glVertex2f(beginX , beginY);
+                glVertex2f(beginX , beginY - blockHeight);
+                glVertex2f(beginX + blockWidth , beginY - blockHeight);
+            glEnd();
+        }
+
+    }
+
+};
+
+
 Player P;
 Troll T[TROLL_NUMBER];
 Weapon W[MAX_WEAPONS];
 SpeedBooster S[MAX_SPEEDBOOSTERS];
 PhasableBlock Ph[PHASABLE_BLOCKS];
 FieryBlock Fb[FIERY_BLOCKS];
-int trollFrameCount = 0;
+Teleport Tlp[TELEPORTATION_STOPS];
+int trollFrameCount = 0, TeleportLocationFixed = 1;
 
+void TeleportPlayer(int locationX, int locationY)
+{
+    for(int i = 0; i < TELEPORTATION_STOPS; i++)
+    {
+
+        if(Tlp[i].locationXF == locationX && Tlp[i].locationYF == locationY)
+        {
+            maze[locationY][locationX] = 'T';
+            P.locationX = Tlp[i].locationXT;
+            P.locationY = Tlp[i].locationYT;
+            maze[P.locationY][P.locationX] = '@';
+            glutPostRedisplay();
+            glFlush();
+        }
+        else if(Tlp[i].locationXT == locationX && Tlp[i].locationYT == locationY)
+        {
+            maze[locationY][locationX] = 'T';
+            P.locationX = Tlp[i].locationXF;
+            P.locationY = Tlp[i].locationYF;
+            maze[P.locationY][P.locationX] = '@';
+            glutPostRedisplay();
+            glFlush();
+        }
+    }
+
+}
 
 void troll()
 {
@@ -481,6 +574,15 @@ void specialTroll()
 }
 
 
+void FixTeleportlocations()
+{
+    for(int i = 0; i < TELEPORTATION_STOPS; i++)
+    {
+        maze[Tlp[i].locationYF][Tlp[i].locationXF] = 'T';
+        maze[Tlp[i].locationYT][Tlp[i].locationXT] = 'T';
+    }
+}
+
 
 void display_maze()
 {
@@ -493,7 +595,7 @@ void display_maze()
     double blockHeight = 1.5 / 34.0 ;  
     float beginX = -0.9f;
     float beginY = 0.725f;
-    int a = 0;
+    int a = 0, b = 0;
 
     for(int i = 0; i < 34; i++)
     {
@@ -552,6 +654,11 @@ void display_maze()
                 FieryBlock::Display(beginX, beginY, blockWidth, blockHeight, a); a++;
             }
 
+            else if(maze[i][j] == 'T')
+            {
+                Teleport::Display(beginX, beginY, blockWidth, blockHeight, b); b++;
+            }
+
             
             beginX += blockWidth;
         }
@@ -569,7 +676,7 @@ void specialkey_playing(int key, int xr, int yr)
     switch(key) 
     {
         case GLUT_KEY_UP: 
-        if((maze[ P.locationY - 1 ][ P.locationX ] == ' ' ) && (maze[ P.locationY - 2 ][ P.locationX ] == 'F' || maze[ P.locationY - 2 ][ P.locationX - 1] == 'F' || maze[ P.locationY - 2 ][ P.locationX + 1] == 'F'))
+        if((maze[ P.locationY - 1 ][ P.locationX ] == ' ' ) && (maze[ P.locationY - 2 ][ P.locationX ] == 'F' || maze[ P.locationY - 2 ][ P.locationX - 1 ] == 'F' || maze[ P.locationY - 2 ][ P.locationX + 1] == 'F'))
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
                 P.locationY -= 1; 
@@ -611,14 +718,24 @@ void specialkey_playing(int key, int xr, int yr)
                P.locationY -= 2;
                maze[ P.locationY ][ P.locationX ] = '@';
            }
+        else if(maze[ P.locationY - 1 ][ P.locationX ] == 'T' )
+            {
+                maze[ P.locationY ][ P.locationX ] = ' ';
+                P.locationY -= 1; 
+                maze[ P.locationY ][ P.locationX ] = '@';
+                TeleportPlayer(P.locationX, P.locationY);
+                TeleportLocationFixed = 0;
+                                
+            }
         else if(maze[ P.locationY - 1 ][ P.locationX ] == ' ' )
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
                 P.locationY -= 1; 
                 maze[ P.locationY ][ P.locationX ] = '@';
             }
+
         break;
-        case GLUT_KEY_DOWN:
+        case GLUT_KEY_DOWN:  
         if(maze[ P.locationY + 1][ P.locationX ] == 'X')
         { 
             maze[ P.locationY ][ P.locationX ] = ' ';
@@ -667,6 +784,15 @@ void specialkey_playing(int key, int xr, int yr)
                P.locationY += 2;
                maze[ P.locationY ][ P.locationX ] = '@';
            }
+        else if(maze[ P.locationY + 1 ][ P.locationX ] == 'T' )
+            {
+                maze[ P.locationY ][ P.locationX ] = ' ';
+                P.locationY += 1; 
+                maze[ P.locationY ][ P.locationX ] = '@';
+                TeleportPlayer(P.locationX, P.locationY);
+                TeleportLocationFixed = 0;
+                
+            }
         else if(maze[ P.locationY + 1 ][ P.locationX ] == ' ')
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
@@ -674,7 +800,7 @@ void specialkey_playing(int key, int xr, int yr)
                 maze[ P.locationY ][ P.locationX ] = '@';
             }
         break;
-        case GLUT_KEY_LEFT: 
+        case GLUT_KEY_LEFT:  
         if((maze[ P.locationY ][ P.locationX - 1 ] == ' ' ) && (maze[ P.locationY ][ P.locationX - 2 ] == 'F' || maze[ P.locationY - 1][ P.locationX - 2 ] == 'F' || maze[ P.locationY + 1][ P.locationX - 2] == 'F'))
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
@@ -717,6 +843,15 @@ void specialkey_playing(int key, int xr, int yr)
                P.locationX -= 2;
                maze[ P.locationY ][ P.locationX ] = '@';
            }
+        else if(maze[ P.locationY ][ P.locationX - 1] == 'T' )
+            {
+                maze[ P.locationY ][ P.locationX ] = ' ';
+                P.locationX -= 1; 
+                maze[ P.locationY ][ P.locationX ] = '@';
+                TeleportPlayer(P.locationX, P.locationY);
+                TeleportLocationFixed = 0;
+                
+            }
         else if(maze[ P.locationY ][ P.locationX -1] == ' ')
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
@@ -724,7 +859,7 @@ void specialkey_playing(int key, int xr, int yr)
                 maze[ P.locationY ][ P.locationX ] = '@';
             }
         break;
-        case GLUT_KEY_RIGHT: 
+        case GLUT_KEY_RIGHT:  
         if((maze[ P.locationY ][ P.locationX + 1 ] == ' ' ) && (maze[ P.locationY ][ P.locationX + 2 ] == 'F' || maze[ P.locationY - 1][ P.locationX + 2 ] == 'F' || maze[ P.locationY + 1][ P.locationX + 2] == 'F'))
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
@@ -767,6 +902,15 @@ void specialkey_playing(int key, int xr, int yr)
                P.locationX += 2;
                maze[ P.locationY ][ P.locationX ] = '@';
            }
+        else if(maze[ P.locationY ][ P.locationX + 1] == 'T' )
+            {
+                maze[ P.locationY ][ P.locationX ] = ' ';
+                P.locationX += 1; 
+                maze[ P.locationY ][ P.locationX ] = '@';
+                TeleportPlayer(P.locationX, P.locationY);
+                TeleportLocationFixed = 0;
+                
+            }
         else if(maze[ P.locationY ][ P.locationX +1] == ' ' )
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
@@ -777,6 +921,8 @@ void specialkey_playing(int key, int xr, int yr)
     }
     if(Player::SpeedBoostCount > MAX_SPEED_BOOST_MOVES)
     Player::SpeedBoost = 0;
+    if(TeleportLocationFixed == 0)
+    FixTeleportlocations();
     glutPostRedisplay();
     glFlush();
 }
