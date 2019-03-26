@@ -12,7 +12,7 @@
 #define PHASABLE_BLOCKS 3
 #define FIERY_BLOCKS 3
 #define TELEPORTATION_STOPS 2
-#define EXTRA_EXIT_NUMBER 2
+#define EXTRA_EXIT_NUMBER 1
 #define WIDTH 18
 #define HEIGHT 11
 
@@ -441,6 +441,9 @@ class FieryBlock
                   locationX = rand()%55; 
                   locationY = rand()%34;
                   if( maze[locationY][locationX] == '#' && ((maze[locationY][locationX - 1] == '#' && maze[locationY][locationX + 1] == '#' && maze[locationY - 1][locationX] == ' ' && maze[locationY + 1][locationX] == ' ') || (maze[locationY - 1][locationX] == '#' && maze[locationY + 1][locationX] == '#' && maze[locationY][locationX - 1] == ' ' && maze[locationY][locationX + 1] == ' ')))
+                  if( maze[locationY - 1][locationX] != '@' && maze[locationY + 1][locationX] != '@' && maze[locationY][locationX + 1] != '@' && maze[locationY][locationX - 1] != '@')
+                  if( maze[locationY - 2][locationX] != '@' && maze[locationY + 2][locationX] != '@' && maze[locationY][locationX + 2] != '@' && maze[locationY][locationX - 2] != '@')
+                  if( maze[locationY - 1][locationX - 1] != '@' && maze[locationY + 1][locationX + 1] != '@' && maze[locationY - 1][locationX + 1] != '@' && maze[locationY + 1][locationX - 1] != '@')
                   break;
                   else
                   continue;
@@ -511,6 +514,12 @@ class Teleport
                   locationYF = rand()%34;
                   locationYT = rand()%34;
                   if( maze[locationYF][locationXF] == ' ' && maze[locationYT][locationXT] == ' ' && locationYF != locationYT && locationXF != locationXT)
+                  if( maze[locationYF - 1][locationXF] != 'F' && maze[locationYF + 1][locationXF] != 'F' && maze[locationYF][locationXF + 1] != 'F' && maze[locationYF][locationXF - 1] != 'F')
+                  if( maze[locationYF - 2][locationXF] != 'F' && maze[locationYF + 2][locationXF] != 'F' && maze[locationYF][locationXF + 2] != 'F' && maze[locationYF][locationXF - 2] != 'F')
+                  if( maze[locationYT - 1][locationXT] != 'F' && maze[locationYT + 1][locationXT] != 'F' && maze[locationYT][locationXT + 1] != 'F' && maze[locationYT][locationXT - 1] != 'F')
+                  if( maze[locationYT - 2][locationXT] != 'F' && maze[locationYT + 2][locationXT] != 'F' && maze[locationYT][locationXT + 2] != 'F' && maze[locationYT][locationXT - 2] != 'F')
+                  if( maze[locationYF - 1][locationXF - 1] != 'F' && maze[locationYF + 1][locationXF + 1] != 'F' && maze[locationYF - 1][locationXF + 1] != 'F' && maze[locationYF + 1][locationXF - 1] != 'F')
+                  if( maze[locationYT - 1][locationXT - 1] != 'F' && maze[locationYT + 1][locationXT + 1] != 'F' && maze[locationYT - 1][locationXT + 1] != 'F' && maze[locationYT + 1][locationXT - 1] != 'F')
                   break;
                   else
                   continue;
