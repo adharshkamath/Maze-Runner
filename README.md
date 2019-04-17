@@ -10,4 +10,3 @@ g++ <program.cpp> -lglut -lGL -lGLU -o program.out
 
 ### Contributing
 While creating a pull request, ask for a review from @rohit-mp or @shanthanu9.
-Contact the mentors for further doubts.
