@@ -89,6 +89,7 @@ int shuffle_array(int *array, int size)
     array[i] = array[r];
     array[r] = temp;
   }
+  return 0;
 }
 
 
@@ -111,6 +112,7 @@ int carve_passage(int cx, int cy, int grid[HEIGHT][WIDTH])
        }
      }
     }
+    return 0;
 }
 
 

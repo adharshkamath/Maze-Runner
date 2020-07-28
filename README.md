@@ -29,3 +29,13 @@ g++ game.cpp -lglut -lGL -lGLU -o game
 
 ./game
 ```
+
+## Demo
+
+Instructions
+
+![Home Screen](instructions.png)
+
+Game Play
+
+![Game Play](gameplay.gif)
