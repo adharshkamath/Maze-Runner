@@ -32,10 +32,11 @@ g++ game.cpp -lglut -lGL -lGLU -o game
 
 ## Demo
 
-Instructions
+### Instructions
 
-![Home Screen](instructions.png)
+<div><img src="instructions.png" alt="Home Screen"/></div>
 
-Game Play
 
-![Game Play](gameplay.gif)
+### Game Play
+
+<p align="center"><img src="gameplay.gif" alt="Game Play" width="100%"/></p>
