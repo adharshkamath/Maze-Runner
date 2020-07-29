@@ -1,5 +1,5 @@
 # Maze Runner
-A popular maze runner game implemented in C++ using OpenGL, as a part of IEEE-Envision 2019.
+A popular maze runner game implemented in C++ using OpenGL, as a part of IEEE-NITK Envision 2019.
 
 
 ## Installation
