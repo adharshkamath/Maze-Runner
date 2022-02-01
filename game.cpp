@@ -447,8 +447,6 @@ class FieryBlock
                   if( maze[locationY - 2][locationX] != '@' && maze[locationY + 2][locationX] != '@' && maze[locationY][locationX + 2] != '@' && maze[locationY][locationX - 2] != '@')
                   if( maze[locationY - 1][locationX - 1] != '@' && maze[locationY + 1][locationX + 1] != '@' && maze[locationY - 1][locationX + 1] != '@' && maze[locationY + 1][locationX - 1] != '@')
                   break;
-                  else
-                  continue;
 
         }
           maze[locationY][locationX] = 'F';
@@ -523,8 +521,6 @@ class Teleport
                   if( maze[locationYF - 1][locationXF - 1] != 'F' && maze[locationYF + 1][locationXF + 1] != 'F' && maze[locationYF - 1][locationXF + 1] != 'F' && maze[locationYF + 1][locationXF - 1] != 'F')
                   if( maze[locationYT - 1][locationXT - 1] != 'F' && maze[locationYT + 1][locationXT + 1] != 'F' && maze[locationYT - 1][locationXT + 1] != 'F' && maze[locationYT + 1][locationXT - 1] != 'F')
                   break;
-                  else
-                  continue;
 
         }
           maze[locationYF][locationXF] = 'T';
