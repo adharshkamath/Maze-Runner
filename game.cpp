@@ -62,7 +62,7 @@ char maze[35][56]=
  {"+#####################################################+"},
  {"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
  {"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
- {"+++++++++++++++++++++++++++++++++++++++++++++++++++++++"} };  
+ {"+++++++++++++++++++++++++++++++++++++++++++++++++++++++"} };
 
 
 void clearWallInX(int locationX, int locationY)
@@ -79,7 +79,7 @@ void clearWallInY(int locationX, int locationY)
 }
 
 
-int shuffle_array(int *array, int size) 
+int shuffle_array(int *array, int size)
 {
   int i;
   for( i = 0; i < (size - 1); i++)
@@ -93,7 +93,7 @@ int shuffle_array(int *array, int size)
 }
 
 
-int carve_passage(int cx, int cy, int grid[HEIGHT][WIDTH]) 
+int carve_passage(int cx, int cy, int grid[HEIGHT][WIDTH])
 {
     int dx, dy, i;
     int directions[4] = {n, e, s, w};
@@ -102,9 +102,9 @@ int carve_passage(int cx, int cy, int grid[HEIGHT][WIDTH])
     {
      dx = DX[directions[i]];
      dy = DY[directions[i]];
-     if ( ((cx + dx < WIDTH) & (cx + dx >= 0)) & ((cy + dy < HEIGHT) & (cy + dy >= 0)) ) 
+     if ( ((cx + dx < WIDTH) & (cx + dx >= 0)) & ((cy + dy < HEIGHT) & (cy + dy >= 0)) )
      {
-       if (grid[cy + dy][cx + dx] == 0) 
+       if (grid[cy + dy][cx + dx] == 0)
        {
          grid[cy][cx] = (grid[cy][cx] | directions[i]);
          grid[cy + dy][cx + dx] = (grid[cy + dy][cx + dx] | OPPOSITE[directions[i]]);
@@ -145,14 +145,14 @@ int GenerateMaze()
     {
       if((grid[m][n] & 2) != 0)
       {
-          clearWallInY((3 * n) + 1, (3 * m) + 1);   
+          clearWallInY((3 * n) + 1, (3 * m) + 1);
       }
       if((grid[m][n] & 4) != 0)
       {
           clearWallInX((3 * n) + 1, (3 * m) + 1);
       }
     }
-  } 
+  }
   return 0;
 
 }
@@ -160,11 +160,11 @@ int GenerateMaze()
 
 void display_LOSE()
 {
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);  
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glColor3f(1.0f, 1.0f, 1.0f);
    glBegin(GL_LINE_STRIP);
-      glColor3f(1.0f, 1.0f, 1.0f); 
+      glColor3f(1.0f, 1.0f, 1.0f);
       glVertex2f(0.125f, -0.25f);
       glVertex2f(0.375f, -0.25f);
       glVertex2f(0.375f, 0.0f);
@@ -172,32 +172,32 @@ void display_LOSE()
       glVertex2f(0.125f, 0.25f);
       glVertex2f(0.375f, 0.25f);
    glEnd();
-   
+
    glBegin(GL_LINE_STRIP);
-      glColor3f(1.0f, 1.0f, 1.0f); 
+      glColor3f(1.0f, 1.0f, 1.0f);
       glVertex2f(0.875f, -0.25f);
       glVertex2f(0.625f, -0.25f);
       glVertex2f(0.625f, 0.25f);
       glVertex2f(0.875f, 0.25f);
 
    glEnd();
-   
+
    glBegin(GL_LINES);
-      glColor3f(1.0f, 1.0f, 1.0f); 
+      glColor3f(1.0f, 1.0f, 1.0f);
       glVertex2f(0.875f, 0.0f);
       glVertex2f(0.625f, 0.0f);
-   glEnd();  
-   
+   glEnd();
+
    glBegin(GL_LINE_LOOP);
-      glColor3f(1.0f, 1.0f, 1.0f); 
+      glColor3f(1.0f, 1.0f, 1.0f);
       glVertex2f(-0.125f, -0.25f);
       glVertex2f(-0.375f, -0.25f);
       glVertex2f(-0.375f, 0.25f);
       glVertex2f(-0.125f, 0.25f);
    glEnd();
-   
+
    glBegin(GL_LINE_STRIP);
-      glColor3f(1.0f, 1.0f, 1.0f); 
+      glColor3f(1.0f, 1.0f, 1.0f);
       glVertex2f(-0.625f, -0.25f);
       glVertex2f(-0.875f, -0.25f);
       glVertex2f(-0.875f, 0.25f);
@@ -209,26 +209,26 @@ void display_LOSE()
 
 void display_WIN()
 {
-    glClearColor(0.20f, 0.20f, 0.20f, 1.0f);  
+    glClearColor(0.20f, 0.20f, 0.20f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glColor3f(1.0f, 1.0f, 1.0f);
    glBegin(GL_LINE_STRIP);
-      glColor3f(1.0f, 1.0f, 1.0f); 
+      glColor3f(1.0f, 1.0f, 1.0f);
       glVertex2f(0.15f, -0.25f);
       glVertex2f(0.15f, 0.25f);
    glEnd();
-   
+
    glBegin(GL_LINE_STRIP);
-      glColor3f(1.0f, 1.0f, 1.0f); 
+      glColor3f(1.0f, 1.0f, 1.0f);
       glVertex2f(0.4f, -0.25f);
       glVertex2f(0.4f, 0.25f);
       glVertex2f(0.7f, -0.25f);
       glVertex2f(0.7f, 0.25f);
 
    glEnd();
-   
+
    glBegin(GL_LINE_STRIP);
-      glColor3f(1.0f, 1.0f, 1.0f); 
+      glColor3f(1.0f, 1.0f, 1.0f);
       glVertex2f(-0.1f, 0.25f);
       glVertex2f(-0.25f, -0.25f);
       glVertex2f(-0.4f, 0.25f);
@@ -240,9 +240,9 @@ void display_WIN()
 }
 
 
-void initGL() 
+void initGL()
 {
-   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); 
+   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 
@@ -251,15 +251,15 @@ class Player
     public:
     int locationX, locationY;
     static int SpeedBoost, Armed, SpeedBoostCount;
-   
+
     Player()
     {
         GenerateMaze();
         srand(time(NULL));
         for(; maze[locationY][locationX] != ' ';)
         {
-              locationX = rand()%55; 
-              locationY = rand()%34;  
+              locationX = rand()%55;
+              locationY = rand()%34;
         }
           maze[locationY][locationX] = '@';
     }
@@ -268,44 +268,44 @@ class Player
     {
         if(SpeedBoost == 0 && Armed == 0 )
             {
-                glBegin(GL_TRIANGLES);          
-                glColor3f(0.0f, 1.0f, 0.0f); 
+                glBegin(GL_TRIANGLES);
+                glColor3f(0.0f, 1.0f, 0.0f);
                 glVertex2f(beginX + (1.0/61.0), beginY - (0.05/15.0));
                 glVertex2f(beginX + (0.65 / 305.0), beginY -blockHeight + (0.3/34.0));
-                glVertex2f(beginX + (8.0 / 305.0), beginY -blockHeight + (0.3/34.0));                    
-                glVertex2f(beginX + (0.65 / 305.0), beginY - (0.3/34.0));                    
-                glVertex2f(beginX + (1.0/61.0), beginY -blockHeight + (0.05/15.0));                    
+                glVertex2f(beginX + (8.0 / 305.0), beginY -blockHeight + (0.3/34.0));
+                glVertex2f(beginX + (0.65 / 305.0), beginY - (0.3/34.0));
+                glVertex2f(beginX + (1.0/61.0), beginY -blockHeight + (0.05/15.0));
                 glVertex2f(beginX + (8.0 / 305.0), beginY - (0.3/34.0));
                 glEnd();
             }
 
         else if(SpeedBoost == 0 && Armed == 1)
             {
-                glBegin(GL_TRIANGLES);          
+                glBegin(GL_TRIANGLES);
                 glColor3f(1.0f, 1.0f, 0.0f);
-                glVertex2f(beginX + (1.0/61.0), beginY - (0.05/15.0));                             
-                glVertex2f(beginX + (0.65 / 305.0), beginY -blockHeight + (0.3/34.0));                    
-                glVertex2f(beginX + (8.0 / 305.0), beginY -blockHeight + (0.3/34.0));                    
-                glVertex2f(beginX + (0.65 / 305.0), beginY - (0.3/34.0));                    
-                glVertex2f(beginX + (1.0/61.0), beginY -blockHeight + (0.05/15.0));                    
+                glVertex2f(beginX + (1.0/61.0), beginY - (0.05/15.0));
+                glVertex2f(beginX + (0.65 / 305.0), beginY -blockHeight + (0.3/34.0));
+                glVertex2f(beginX + (8.0 / 305.0), beginY -blockHeight + (0.3/34.0));
+                glVertex2f(beginX + (0.65 / 305.0), beginY - (0.3/34.0));
+                glVertex2f(beginX + (1.0/61.0), beginY -blockHeight + (0.05/15.0));
                 glVertex2f(beginX + (8.0 / 305.0), beginY - (0.3/34.0));
                 glEnd();
             }
 
         else if(SpeedBoost == 1 && Armed == 0)
             {
-                glBegin(GL_TRIANGLES);          
-                glColor3f(0.5f, 0.0f, 0.5f); 
-                glVertex2f(beginX + (1.0/61.0), beginY - (0.05/15.0));                             
-                glVertex2f(beginX + (0.65 / 305.0), beginY -blockHeight + (0.3/34.0));                     
-                glVertex2f(beginX + (8.0 / 305.0), beginY -blockHeight + (0.3/34.0));                     
-                glVertex2f(beginX + (0.65 / 305.0), beginY - (0.3/34.0));                     
-                glVertex2f(beginX + (1.0/61.0), beginY -blockHeight + (0.05/15.0));                     
+                glBegin(GL_TRIANGLES);
+                glColor3f(0.5f, 0.0f, 0.5f);
+                glVertex2f(beginX + (1.0/61.0), beginY - (0.05/15.0));
+                glVertex2f(beginX + (0.65 / 305.0), beginY -blockHeight + (0.3/34.0));
+                glVertex2f(beginX + (8.0 / 305.0), beginY -blockHeight + (0.3/34.0));
+                glVertex2f(beginX + (0.65 / 305.0), beginY - (0.3/34.0));
+                glVertex2f(beginX + (1.0/61.0), beginY -blockHeight + (0.05/15.0));
                 glVertex2f(beginX + (8.0 / 305.0), beginY - (0.3/34.0));
                 glEnd();
             }
     }
-   
+
 };
 
 
@@ -318,7 +318,7 @@ class Troll
 {
     public:
     int locationX, locationY;
-    
+
     Troll()
     {
         srand(time(NULL));
@@ -329,11 +329,11 @@ class Troll
         }
          maze[locationY][locationX] = '*';
     }
-    
+
     static void Display(float beginX, float beginY, float blockWidth, float blockHeight)
     {
-        glBegin(GL_TRIANGLES);          
-                glColor3f(0.9f, 0.0f, 0.0f); 
+        glBegin(GL_TRIANGLES);
+                glColor3f(0.9f, 0.0f, 0.0f);
                     glVertex2f(beginX + (0.65 / 305.0), beginY - (0.3/34.0));
                     glVertex2f(beginX + (1.0/61.0), beginY -blockHeight + (0.05/15.0));
                     glVertex2f(beginX + (8.0 / 305.0), beginY - (0.3/34.0));
@@ -352,8 +352,8 @@ class SpeedBooster
         srand(time(NULL));
         for(; maze[locationY][locationX] != ' ';)
         {
-              locationX = rand()%55; 
-              locationY = rand()%34;  
+              locationX = rand()%55;
+              locationY = rand()%34;
         }
           maze[locationY][locationX] = 's';
     }
@@ -379,8 +379,8 @@ class Weapon
         srand(time(NULL));
         for(; maze[locationY][locationX] != ' ';)
         {
-              locationX = rand()%55; 
-              locationY = rand()%34;  
+              locationX = rand()%55;
+              locationY = rand()%34;
         }
           maze[locationY][locationX] = '&';
     }
@@ -404,19 +404,19 @@ class PhasableBlock
     int locationX, locationY;
     PhasableBlock()
     {
-        srand(time(NULL)); 
+        srand(time(NULL));
         while(1)
         {
-                  locationX = rand()%55; 
+                  locationX = rand()%55;
                   locationY = rand()%34;
                   if( maze[locationY][locationX] == '#' && ((maze[locationY][locationX - 1] == '#' && maze[locationY][locationX + 1] == '#' && maze[locationY - 1][locationX] == ' ' && maze[locationY + 1][locationX] == ' ') || (maze[locationY - 1][locationX] == '#' && maze[locationY + 1][locationX] == '#' && maze[locationY][locationX - 1] == ' ' && maze[locationY][locationX + 1] == ' ')))
                   break;
                   else
                   continue;
-                  
+
         }
           maze[locationY][locationX] = '!';
-          
+
     }
     static void Display(float beginX, float beginY, float blockWidth, float blockHeight)
     {
@@ -437,10 +437,10 @@ class FieryBlock
     int locationX, locationY;
     FieryBlock()
     {
-        srand(time(NULL)); 
+        srand(time(NULL));
         while(1)
         {
-                  locationX = rand()%55; 
+                  locationX = rand()%55;
                   locationY = rand()%34;
                   if( maze[locationY][locationX] == '#' && ((maze[locationY][locationX - 1] == '#' && maze[locationY][locationX + 1] == '#' && maze[locationY - 1][locationX] == ' ' && maze[locationY + 1][locationX] == ' ') || (maze[locationY - 1][locationX] == '#' && maze[locationY + 1][locationX] == '#' && maze[locationY][locationX - 1] == ' ' && maze[locationY][locationX + 1] == ' ')))
                   if( maze[locationY - 1][locationX] != '@' && maze[locationY + 1][locationX] != '@' && maze[locationY][locationX + 1] != '@' && maze[locationY][locationX - 1] != '@')
@@ -449,7 +449,7 @@ class FieryBlock
                   break;
                   else
                   continue;
-                  
+
         }
           maze[locationY][locationX] = 'F';
           if(maze[locationY][locationX - 1] == '#')
@@ -459,7 +459,7 @@ class FieryBlock
           else if(maze[locationY - 1][locationX] == '#')
           maze[locationY - 1][locationX] = 'F';
           else if(maze[locationY + 1][locationX] == '#')
-          maze[locationY + 1][locationX] = 'F';      
+          maze[locationY + 1][locationX] = 'F';
     }
     static void Display(float beginX, float beginY, float blockWidth, float blockHeight, int i)
     {
@@ -508,10 +508,10 @@ class Teleport
     int locationXF, locationYF, locationXT, locationYT;
     Teleport()
     {
-        srand(time(NULL)); 
+        srand(time(NULL));
         while(1)
         {
-                  locationXF = rand()%55; 
+                  locationXF = rand()%55;
                   locationXT = rand()%55;
                   locationYF = rand()%34;
                   locationYT = rand()%34;
@@ -525,15 +525,15 @@ class Teleport
                   break;
                   else
                   continue;
-                  
+
         }
           maze[locationYF][locationXF] = 'T';
           maze[locationYT][locationXT] = 'T';
-          
+
     }
     static void Display(float beginX, float beginY, float blockWidth, float blockHeight, int i)
     {
-     
+
         static int BlinkArray[2 * TELEPORTATION_STOPS] = {0};
         (BlinkArray[i])++;
         if(BlinkArray[i] == 10)
@@ -579,10 +579,10 @@ class ExtraExits
     int locationX, locationY;
     ExtraExits()
     {
-        srand(time(NULL)); 
+        srand(time(NULL));
         while(1)
         {
-            locationX = rand()%55; 
+            locationX = rand()%55;
             locationY = rand()%34;
             if( maze[locationY][locationX] == '+' )
             {
@@ -592,7 +592,7 @@ class ExtraExits
                     break;
             }
             else
-            continue;    
+            continue;
         }
           maze[locationY][locationX] = 'X';
           if(maze[locationY][locationX - 1] == '+' && maze[locationY + 1][locationX - 1] == ' ')
@@ -610,16 +610,16 @@ class ExtraExits
           else if(maze[locationY - 1][locationX] == '+' && maze[locationY - 1][locationX - 1] == ' ')
           maze[locationY - 1][locationX] = 'X';
           else if(maze[locationY + 1][locationX] == '+' && maze[locationY + 1][locationX - 1] == ' ')
-          maze[locationY + 1][locationX] = 'X';     
+          maze[locationY + 1][locationX] = 'X';
     }
     static void Display(float beginX, float beginY, float blockWidth, float blockHeight)
     {
         glBegin(GL_QUADS);
-            glColor3f(0.0f, 0.39218f, 0.0f); 
+            glColor3f(0.0f, 0.39218f, 0.0f);
                 glVertex2f(beginX + blockWidth , beginY);
                 glVertex2f(beginX , beginY);
                 glVertex2f(beginX , beginY - blockHeight);
-                glVertex2f(beginX + blockWidth , beginY - blockHeight); 
+                glVertex2f(beginX + blockWidth , beginY - blockHeight);
         glEnd();
     }
 
@@ -674,8 +674,8 @@ void troll()
 	        j = T[k].locationY;
                                        //Check if the troll is next to the player
 	            if(maze[ T[k].locationY - 1][ T[k].locationX ] == '@' && Player::Armed == 0 )        {   T[k].locationY = T[k].locationY -1;  GameCompletion = -1;  }
-                else if(maze[ T[k].locationY + 1][ T[k].locationX ] == '@' && Player::Armed == 0 )   {   T[k].locationY = T[k].locationY +1;  GameCompletion = -1;  } 
-                else if(maze[ T[k].locationY ][ T[k].locationX + 1] == '@' && Player::Armed == 0 )    {   T[k].locationX = T[k].locationX +1;  GameCompletion = -1;  } 
+                else if(maze[ T[k].locationY + 1][ T[k].locationX ] == '@' && Player::Armed == 0 )   {   T[k].locationY = T[k].locationY +1;  GameCompletion = -1;  }
+                else if(maze[ T[k].locationY ][ T[k].locationX + 1] == '@' && Player::Armed == 0 )    {   T[k].locationX = T[k].locationX +1;  GameCompletion = -1;  }
                 else if(maze[ T[k].locationY ][ T[k].locationX - 1] == '@' && Player::Armed == 0 )    {   T[k].locationX = T[k].locationX -1;  GameCompletion = -1;  }
             {
 		        int p = 1,q = 1;
@@ -684,24 +684,24 @@ void troll()
 		         if( T[k].locationY > P.locationY )   q = -1;
                    //Check if the troll and the player are in same line
                 if( T[k].locationX == P.locationX )
-                {     
-                    if(maze[ T[k].locationY + q][ T[k].locationX ]==' ')   T[k].locationY = T[k].locationY + q; 
-		            else if(maze[ T[k].locationY - q][ T[k].locationX ]==' ')   T[k].locationY = T[k].locationY - q; 
+                {
+                    if(maze[ T[k].locationY + q][ T[k].locationX ]==' ')   T[k].locationY = T[k].locationY + q;
+		            else if(maze[ T[k].locationY - q][ T[k].locationX ]==' ')   T[k].locationY = T[k].locationY - q;
 		            else if(maze[ T[k].locationY ][ T[k].locationX + p]==' ')   T[k].locationX = T[k].locationX + p;
-		            else if(maze[ T[k].locationY ][ T[k].locationX - p]==' ')   T[k].locationX = T[k].locationX - p; 
+		            else if(maze[ T[k].locationY ][ T[k].locationX - p]==' ')   T[k].locationX = T[k].locationX - p;
                 }
                 else if( T[k].locationY == P.locationY )
-                {    
-                    if(maze[ T[k].locationY ][ T[k].locationX + p]==' ')   T[k].locationX = T[k].locationX + p;  
+                {
+                    if(maze[ T[k].locationY ][ T[k].locationX + p]==' ')   T[k].locationX = T[k].locationX + p;
 		            else if(maze[ T[k].locationY ][ T[k].locationX - p]==' ')   T[k].locationX = T[k].locationX - p;
 		            else if(maze[ T[k].locationY + q][ T[k].locationX ]==' ')   T[k].locationY = T[k].locationY + q;
 		            else if(maze[ T[k].locationY - q][ T[k].locationX ]==' ')   T[k].locationY = T[k].locationY - q;
                 }
                 //Check in which direction is the troll near to the player
                 else if(abs( T[k].locationX - P.locationX) < abs( T[k].locationY - P.locationY))
-                {   
+                {
                        /* If the troll is near to the player in x-direction, first see if the troll could be moved to that position.
-                       If no, then try in y-direction. If both does not satisfy, then find for x and y direction in opposite side. 
+                       If no, then try in y-direction. If both does not satisfy, then find for x and y direction in opposite side.
                        */
 			        if(maze[ T[k].locationY ][ T[k].locationX + p]==' ')   T[k].locationX = T[k].locationX + p;   //Check for the most feasible move
 			        else if(maze[ T[k].locationY + q][ T[k].locationX ]==' ')   T[k].locationY = T[k].locationY + q;
@@ -711,14 +711,14 @@ void troll()
 		        else
                 {
                        /* If the troll is near to the player in y-direction, first see if the troll could be moved to that position.
-                       If no, then try in x-direction. If both does not satisfy, then find for x and y direction in opposite side. 
+                       If no, then try in x-direction. If both does not satisfy, then find for x and y direction in opposite side.
                        */
-		            if(maze[ T[k].locationY + q][ T[k].locationX ]==' ')  T[k].locationY = T[k].locationY + q; 
+		            if(maze[ T[k].locationY + q][ T[k].locationX ]==' ')  T[k].locationY = T[k].locationY + q;
 		            else if(maze[ T[k].locationY ][ T[k].locationX + p]==' ')   T[k].locationX = T[k].locationX + p;
-		            else if(maze[ T[k].locationY - q][ T[k].locationX ]==' ')   T[k].locationY = T[k].locationY - q; 
+		            else if(maze[ T[k].locationY - q][ T[k].locationX ]==' ')   T[k].locationY = T[k].locationY - q;
 		                 //else if(maze[ T[k].locationY ][ T[k].locationX -p]==' ')   T[k].locationX = T[k].locationX -p;
 		        }
-	        } 
+	        }
 	          maze[j][i] = ' ';
 	          maze[ T[k].locationY ][ T[k].locationX ] = '*';
               glutPostRedisplay();
@@ -740,7 +740,7 @@ void specialTroll()
         troll();
       }
     }
-   
+
 }
 
 
@@ -756,13 +756,13 @@ void FixTeleportlocations()
 
 void display_maze()
 {
-    
-    glClearColor(0.05f, 0.05f, 0.05f, 1.0f);  
+
+    glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glutFullScreen();
-    
-    double blockWidth = 2.0 / 61.0 ;   
-    double blockHeight = 1.5 / 34.0 ;  
+
+    double blockWidth = 2.0 / 61.0 ;
+    double blockHeight = 1.5 / 34.0 ;
     float beginX = -0.9f;
     float beginY = 0.725f;
     int a = 0, b = 0;
@@ -774,27 +774,27 @@ void display_maze()
             if(maze[i][j] == '#' || maze[i][j] == '+' )
             {
                 glBegin(GL_QUADS);
-                   glColor3f(1.0f, 1.0f, 1.0f); 
+                   glColor3f(1.0f, 1.0f, 1.0f);
                    glVertex2f(beginX + blockWidth , beginY);
                    glVertex2f(beginX , beginY);
                    glVertex2f(beginX , beginY - blockHeight);
-                   glVertex2f(beginX + blockWidth , beginY - blockHeight);                 
+                   glVertex2f(beginX + blockWidth , beginY - blockHeight);
                 glEnd();
             }
-            
+
             else if(maze[i][j] == '@')
             {
-                P.Display(beginX, beginY, blockWidth, blockHeight);                
-            } 
+                P.Display(beginX, beginY, blockWidth, blockHeight);
+            }
 
             else if(maze[i][j] == 'X' )
             {
                 glBegin(GL_QUADS);
-                   glColor3f(0.0f, 0.39218f, 0.0f); 
+                   glColor3f(0.0f, 0.39218f, 0.0f);
                    glVertex2f(beginX + blockWidth , beginY);
                    glVertex2f(beginX , beginY);
                    glVertex2f(beginX , beginY - blockHeight);
-                   glVertex2f(beginX + blockWidth , beginY - blockHeight);                 
+                   glVertex2f(beginX + blockWidth , beginY - blockHeight);
                 glEnd();
             }
 
@@ -805,18 +805,18 @@ void display_maze()
 
             else if(maze[i][j] == '&')
             {
-                Weapon::Display(beginX, beginY, blockWidth, blockHeight);                
+                Weapon::Display(beginX, beginY, blockWidth, blockHeight);
             }
 
             else if(maze[i][j] == 's')
             {
-                SpeedBooster::Display(beginX, beginY, blockWidth, blockHeight);                 
+                SpeedBooster::Display(beginX, beginY, blockWidth, blockHeight);
             }
 
             else if(maze[i][j] == '!')
             {
                 PhasableBlock::Display(beginX, beginY, blockWidth, blockHeight);
-                
+
             }
 
             else if(maze[i][j] == 'F')
@@ -829,63 +829,63 @@ void display_maze()
                 Teleport::Display(beginX, beginY, blockWidth, blockHeight, b); b++;
             }
 
-            
+
             beginX += blockWidth;
         }
         beginY -= blockHeight;
         beginX = -0.9f;
     }
     glFlush();
-    
+
 }
 
 
 void specialkey_playing(int key, int xr, int yr)
 {
     if(TeleportLocationFixed == 0)
-            FixTeleportlocations();   
-    switch(key) 
+            FixTeleportlocations();
+    switch(key)
     {
-        case GLUT_KEY_UP: 
-        
+        case GLUT_KEY_UP:
+
         if(maze[ P.locationY - 1][ P.locationX ] == 'X')
-        { 
+        {
             maze[ P.locationY ][ P.locationX ] = ' ';
             maze[ --P.locationY  ][ P.locationX ] = '@';
-            GameCompletion = 1; 
-        } 
+            GameCompletion = 1;
+        }
         else if((maze[ P.locationY - 1 ][ P.locationX ] == ' ' ) && (maze[ P.locationY - 2 ][ P.locationX ] == 'F' || maze[ P.locationY - 2 ][ P.locationX - 1 ] == 'F' || maze[ P.locationY - 2 ][ P.locationX + 1] == 'F'))
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationY -= 1; 
+                P.locationY -= 1;
                 maze[ P.locationY ][ P.locationX ] = '@';
                 GameCompletion = -1;
             }
         else if(maze[ P.locationY - 1 ][ P.locationX ] == ' ' && Player::SpeedBoost == 1 && maze[ P.locationY - 2 ][ P.locationX ] == ' ' && Player::SpeedBoostCount <= MAX_SPEED_BOOST_MOVES)
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationY -= 2; 
+                P.locationY -= 2;
                 maze[ P.locationY ][ P.locationX ] = '@';
                 Player::SpeedBoostCount++;
             }
         else if(maze[ P.locationY - 1 ][ P.locationX ] == '*' && Player::Armed == 1)
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationY -= 1; 
+                P.locationY -= 1;
                 maze[ P.locationY ][ P.locationX ] = '@';
                 Player::Armed = 0;
             }
         else if(maze[ P.locationY - 1 ][ P.locationX ] == '&' && Player::Armed == 0 && Player::SpeedBoost == 0)
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationY -= 1; 
+                P.locationY -= 1;
                 maze[ P.locationY ][ P.locationX ] = '@';
                 Player::Armed = 1;
             }
         else if(maze[ P.locationY - 1 ][ P.locationX ] == 's' && Player::SpeedBoost == 0 && Player::Armed == 0)
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationY -= 1; 
+                P.locationY -= 1;
                 maze[ P.locationY ][ P.locationX ] = '@';
                 Player::SpeedBoost = 1;
             }
@@ -899,60 +899,60 @@ void specialkey_playing(int key, int xr, int yr)
         else if(maze[ P.locationY - 1 ][ P.locationX ] == 'T' )
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationY -= 1; 
+                P.locationY -= 1;
                 maze[ P.locationY ][ P.locationX ] = '@';
                 TeleportPlayer(P.locationX, P.locationY);
                 TeleportLocationFixed = 0;
-                                
+
             }
         else if(maze[ P.locationY - 1 ][ P.locationX ] == ' ' )
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationY -= 1; 
+                P.locationY -= 1;
                 maze[ P.locationY ][ P.locationX ] = '@';
             }
 
         break;
         case GLUT_KEY_DOWN:
-          
+
         if(maze[ P.locationY + 1][ P.locationX ] == 'X')
-        { 
+        {
             maze[ P.locationY ][ P.locationX ] = ' ';
             maze[ ++P.locationY  ][ P.locationX ] = '@';
-            GameCompletion = 1; 
-        } 
+            GameCompletion = 1;
+        }
         else if((maze[ P.locationY + 1 ][ P.locationX ] == ' ' ) && (maze[ P.locationY + 2 ][ P.locationX ] == 'F' || maze[ P.locationY + 2 ][ P.locationX - 1] == 'F' || maze[ P.locationY + 2 ][ P.locationX + 1] == 'F'))
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationY += 1; 
+                P.locationY += 1;
                 maze[ P.locationY ][ P.locationX ] = '@';
                 GameCompletion = -1;
             }
         else if(maze[ P.locationY + 1 ][ P.locationX ] == ' ' && Player::SpeedBoost == 1 && maze[ P.locationY + 2 ][ P.locationX ] == ' '  && Player::SpeedBoostCount <= MAX_SPEED_BOOST_MOVES)
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationY   += 2; 
+                P.locationY   += 2;
                 maze[ P.locationY ][ P.locationX ] = '@';
                 Player::SpeedBoostCount++;
             }
         else if(maze[ P.locationY + 1 ][ P.locationX ] == '*' && Player::Armed == 1)
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationY   += 1; 
+                P.locationY   += 1;
                 maze[ P.locationY ][ P.locationX ] = '@';
                 Player::Armed = 0;
             }
         else if(maze[ P.locationY + 1 ][ P.locationX ] == '&' && Player::Armed == 0 && Player::SpeedBoost == 0)
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationY   += 1; 
+                P.locationY   += 1;
                 maze[ P.locationY ][ P.locationX ] = '@';
                 Player::Armed = 1;
             }
         else if(maze[ P.locationY + 1 ][ P.locationX ] == 's' && Player::SpeedBoost == 0 && Player::Armed == 0)
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationY   += 1; 
+                P.locationY   += 1;
                 maze[ P.locationY ][ P.locationX ] = '@';
                 Player::SpeedBoost = 1;
             }
@@ -966,59 +966,59 @@ void specialkey_playing(int key, int xr, int yr)
         else if(maze[ P.locationY + 1 ][ P.locationX ] == 'T' )
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationY += 1; 
+                P.locationY += 1;
                 maze[ P.locationY ][ P.locationX ] = '@';
                 TeleportPlayer(P.locationX, P.locationY);
                 TeleportLocationFixed = 0;
-                
+
             }
         else if(maze[ P.locationY + 1 ][ P.locationX ] == ' ')
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationY   += 1; 
+                P.locationY   += 1;
                 maze[ P.locationY ][ P.locationX ] = '@';
             }
         break;
-        case GLUT_KEY_LEFT: 
-        
+        case GLUT_KEY_LEFT:
+
         if(maze[ P.locationY ][ P.locationX - 1] == 'X')
-        { 
+        {
             maze[ P.locationY ][ P.locationX ] = ' ';
             maze[ P.locationY  ][ --P.locationX ] = '@';
-            GameCompletion = 1; 
-        } 
+            GameCompletion = 1;
+        }
         else if((maze[ P.locationY ][ P.locationX - 1 ] == ' ' ) && (maze[ P.locationY ][ P.locationX - 2 ] == 'F' || maze[ P.locationY - 1][ P.locationX - 2 ] == 'F' || maze[ P.locationY + 1][ P.locationX - 2] == 'F'))
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationX -= 1; 
+                P.locationX -= 1;
                 maze[ P.locationY ][ P.locationX ] = '@';
                 GameCompletion = -1;
             }
         else if(maze[ P.locationY ][ P.locationX  - 1] == ' ' && Player::SpeedBoost == 1 && maze[ P.locationY ][ P.locationX  - 2] == ' '  && Player::SpeedBoostCount <= MAX_SPEED_BOOST_MOVES)
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationX  -= 2; 
+                P.locationX  -= 2;
                 maze[ P.locationY ][ P.locationX ] = '@';
                 Player::SpeedBoostCount++;
             }
         else if(maze[ P.locationY ][ P.locationX  - 1] == '*' && Player::Armed == 1)
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationX  -= 1; 
+                P.locationX  -= 1;
                 maze[ P.locationY ][ P.locationX ] = '@';
                 Player::Armed = 0;
             }
         else if(maze[ P.locationY ][ P.locationX  - 1] == '&' && Player::Armed == 0 && Player::SpeedBoost == 0)
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationX  -= 1; 
+                P.locationX  -= 1;
                 maze[ P.locationY ][ P.locationX ] = '@';
                 Player::Armed = 1;
             }
         else if(maze[ P.locationY ][ P.locationX  - 1] == 's' && Player::SpeedBoost == 0 && Player::Armed == 0)
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationX  -= 1; 
+                P.locationX  -= 1;
                 maze[ P.locationY ][ P.locationX ] = '@';
                 Player::SpeedBoost = 1;
             }
@@ -1032,41 +1032,41 @@ void specialkey_playing(int key, int xr, int yr)
         else if(maze[ P.locationY ][ P.locationX - 1] == 'T' )
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationX -= 1; 
+                P.locationX -= 1;
                 maze[ P.locationY ][ P.locationX ] = '@';
                 TeleportPlayer(P.locationX, P.locationY);
                 TeleportLocationFixed = 0;
-                
+
             }
         else if(maze[ P.locationY ][ P.locationX -1] == ' ')
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationX  -= 1; 
+                P.locationX  -= 1;
                 maze[ P.locationY ][ P.locationX ] = '@';
             }
         break;
         case GLUT_KEY_RIGHT:
-          
+
         if(maze[ P.locationY ][ P.locationX + 1] == 'X')
-        { 
+        {
             maze[ P.locationY ][ P.locationX ] = ' ';
             maze[ P.locationY  ][ ++P.locationX ] = '@';
-            GameCompletion = 1; 
-        } 
+            GameCompletion = 1;
+        }
         else if((maze[ P.locationY ][ P.locationX + 1 ] == ' ' ) && (maze[ P.locationY ][ P.locationX + 2 ] == 'F' || maze[ P.locationY - 1][ P.locationX + 2 ] == 'F' || maze[ P.locationY + 1][ P.locationX + 2] == 'F'))
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationX += 1; 
+                P.locationX += 1;
                 maze[ P.locationY ][ P.locationX ] = '@';
                 GameCompletion = -1;
             }
         else if(maze[ P.locationY ][ P.locationX  + 1] == ' ' && Player::SpeedBoost == 1 && maze[ P.locationY ][ P.locationX  + 2] == ' '  && Player::SpeedBoostCount <= MAX_SPEED_BOOST_MOVES)
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationX  += 2; 
+                P.locationX  += 2;
                 maze[ P.locationY ][ P.locationX ] = '@';
                 Player::SpeedBoostCount++;
-            } 
+            }
         else if(maze[ P.locationY ][ P.locationX  + 1] == '*' && Player::Armed == 1)
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
@@ -1098,11 +1098,11 @@ void specialkey_playing(int key, int xr, int yr)
         else if(maze[ P.locationY ][ P.locationX + 1] == 'T' )
             {
                 maze[ P.locationY ][ P.locationX ] = ' ';
-                P.locationX += 1; 
+                P.locationX += 1;
                 maze[ P.locationY ][ P.locationX ] = '@';
                 TeleportPlayer(P.locationX, P.locationY);
                 TeleportLocationFixed = 0;
-                
+
             }
         else if(maze[ P.locationY ][ P.locationX +1] == ' ' )
             {
@@ -1137,7 +1137,7 @@ void display_Home()
     glClear(GL_COLOR_BUFFER_BIT);
     glColor3f(1.0f, 1.0f, 1.0f);
     glutFullScreen();
-    double blockWidth = 2.0 / 61.0 ;   
+    double blockWidth = 2.0 / 61.0 ;
     double blockHeight = 1.5 / 34.0 ;
     char buf1[]="Welcome to Maze Runner!";
     renderbitmap(-0.8f,0.85f - 0.05f,GLUT_BITMAP_9_BY_15,buf1);
@@ -1147,7 +1147,7 @@ void display_Home()
     renderbitmap(-0.8f,0.65f - 0.05f,GLUT_BITMAP_9_BY_15,buf21);
     char buf212[]="You look something like this -> ";
     renderbitmap(-0.8f,0.55f - 0.05f,GLUT_BITMAP_9_BY_15,buf212);
-    Player::Display(-0.5f, 0.58f - 0.05f, blockWidth, blockHeight); 
+    Player::Display(-0.5f, 0.58f - 0.05f, blockWidth, blockHeight);
     glColor3f(1.0f, 1.0f, 1.0f);
     char buf3[]="Use the arrow keys to move up, down, right or left ";
     renderbitmap(-0.8f,0.45f - 0.05f,GLUT_BITMAP_9_BY_15,buf3);
@@ -1207,13 +1207,13 @@ void display()
     }
     else if(GameCompletion == 1 && GameBegin == 1)
     {
-        
+
         usleep(50000);
         display_WIN();
     }
     else if(GameCompletion == -1 && GameBegin == 1)
     {
-       
+
         usleep(50000);
         display_LOSE();
     }
@@ -1231,7 +1231,7 @@ void specialFunc(int key, int v, int c)
 }
 
 
-void processNormalKeysForHome(unsigned char key, int x, int y) 
+void processNormalKeysForHome(unsigned char key, int x, int y)
 {
      if(key > 0 && key != 27)
 		{
@@ -1246,7 +1246,7 @@ void processNormalKeysForHome(unsigned char key, int x, int y)
 }
 
 
-void processNormalKeys(unsigned char key, int x, int y) 
+void processNormalKeys(unsigned char key, int x, int y)
 {
     if (key > 0)
 		glutDestroyWindow(WindowID);
@@ -1265,22 +1265,22 @@ int main(int argc, char** argv)
 {
     srand(time(NULL));
 
-    glutInit(&argc, argv); 
-    
+    glutInit(&argc, argv);
+
     WindowID = glutCreateWindow("Maze Runner");
-    
-    glutDisplayFunc(display);    
-    
+
+    glutDisplayFunc(display);
+
     glutIdleFunc(specialTroll);
-    
+
     glutSpecialFunc(specialFunc);
-    
+
     glutKeyboardFunc(KeyboardFunction);
-    
+
     initGL();
-    
-    glutMainLoop();                 
-    
-    return 0; 
+
+    glutMainLoop();
+
+    return 0;
 
 }
