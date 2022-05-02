@@ -116,7 +116,7 @@ int carve_passage(int cx, int cy, int grid[HEIGHT][WIDTH])
 }
 
 
-int GenerateMaze()
+int generate_maze()
 {
   OPPOSITE[n] = s;
   OPPOSITE[e] = w;
@@ -254,7 +254,7 @@ class Player
 
     Player()
     {
-        GenerateMaze();
+        generate_maze();
         srand(time(NULL));
         for(; maze[locationY][locationX] != ' ';)
         {

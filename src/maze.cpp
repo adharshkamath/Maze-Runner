@@ -1,4 +1,7 @@
+#include <iostream>
 #include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
 #include "include/maze.h"
 
 int DX[9];
@@ -51,4 +54,45 @@ int carve_passage(int cx, int cy, int grid[HEIGHT][WIDTH])
      }
     }
     return 0;
+}
+
+int generate_maze()
+{
+  OPPOSITE[n] = s;
+  OPPOSITE[e] = w;
+  OPPOSITE[s] = n;
+  OPPOSITE[w] = e;
+
+  DX[n] = 0;
+  DX[e] = 1;
+  DX[s] = 0;
+  DX[w] = -1;
+
+  DY[n] = -1;
+  DY[e] = 0;
+  DY[s] = 1;
+  DY[w] = 0;
+
+  int x, y;
+  memset(&grid[0], 0, sizeof(grid));
+  srand(time(NULL));
+  x = rand() % 18;
+  y = rand() % 11;
+  carve_passage(x, y, grid);
+  for(int m = 0; m < 11; m++)
+  {
+    for(int n = 0; n < 18; n++)
+    {
+      if((grid[m][n] & 2) != 0)
+      {
+          clearWallInY((3 * n) + 1, (3 * m) + 1);
+      }
+      if((grid[m][n] & 4) != 0)
+      {
+          clearWallInX((3 * n) + 1, (3 * m) + 1);
+      }
+    }
+  }
+  return 0;
+
 }
