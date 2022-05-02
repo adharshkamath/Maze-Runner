@@ -20,13 +20,14 @@ sudo apt-get install freeglut3-dev
 
 Please refer to [this](https://www.khronos.org/opengl/wiki/Getting_Started) to install the necessary libraries in Windows and macOS.
 
+Make sure you have `make` installed
 
 ## How to run
 
-Compile the game with the following command :
+Build the game with the following command :
 
 ```
-g++ game.cpp -lglut -lGL -lGLU -o game
+make
 
 ./game
 ```
