@@ -27,6 +27,8 @@ Make sure you have `make` installed
 Build the game with the following command :
 
 ```
+mkdir obj
+
 make
 
 ./game
