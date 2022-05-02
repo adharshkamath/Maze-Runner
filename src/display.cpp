@@ -318,7 +318,7 @@ void animate_maze_static() {
 	double blockHeight = 1.5 / 34.0;
 	float beginX = -0.9f;
 	float beginY = 0.725f;
-	static int counter = 0;
+	static long unsigned int counter = 0;
 
 	if((grid[path[counter].first][path[counter].second] & 2) != 0)
 	{
