@@ -1,3 +1,6 @@
 #Executable
 *.out
+*.d
+*.o
+.vscode/*
 game

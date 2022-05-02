@@ -1,0 +1,16 @@
+
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
+
+#define MAX_SPEED_BOOST_MOVES 15
+#define TROLL_NUMBER 4
+#define MAX_WEAPONS 2
+#define MAX_SPEEDBOOSTERS 1
+#define PHASABLE_BLOCKS 3
+#define FIERY_BLOCKS 3
+#define TELEPORTATION_STOPS 2
+#define EXTRA_EXIT_NUMBER 1
+#define WIDTH 18
+#define HEIGHT 11
+
+#endif
