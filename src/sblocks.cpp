@@ -1,4 +1,3 @@
-#include "include/maze.h"
 #include "include/sblocks.h"
 
 PhasableBlock::PhasableBlock()

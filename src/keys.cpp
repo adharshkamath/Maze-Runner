@@ -20,3 +20,11 @@ void processNormalKeys(unsigned char key, int x, int y)
     if (key > 0)
 		glutDestroyWindow(WindowID);
 }
+
+
+void KeyboardFunction(unsigned char key, int xr, int yr)
+{
+    processNormalKeysForHome(key,xr,yr);
+    if(GameCompletion != 0 && GameBegin == 1)
+      processNormalKeys(key,xr,yr);
+}

@@ -367,17 +367,9 @@ void specialFunc(int key, int v, int c)
 {
     if(GameCompletion == 0 && GameBegin == 1)
         {
-            specialkey_playing(key,v,c);
+            specialkey_playing(key, v, c);
             firstKeyPressed = 1;
         }
-}
-
-
-void KeyboardFunction(unsigned char key, int xr, int yr)
-{
-    processNormalKeysForHome(key,xr,yr);
-    if(GameCompletion != 0 && GameBegin == 1)
-      processNormalKeys(key,xr,yr);
 }
 
 

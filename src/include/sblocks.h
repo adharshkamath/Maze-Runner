@@ -1,5 +1,10 @@
+#ifndef SBLOCKS_H
+#define SBLOCKS_H
+
 #include <GL/glut.h>
 #include <stdlib.h>
+#include "maze.h"
+#include "player.h"
 
 class PhasableBlock
 {
@@ -26,3 +31,5 @@ class Teleport
     Teleport();
     static void Display(float beginX, float beginY, float blockWidth, float blockHeight, int i);
 };
+
+#endif
