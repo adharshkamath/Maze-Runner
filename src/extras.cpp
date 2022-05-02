@@ -6,8 +6,8 @@ SpeedBooster::SpeedBooster()
     srand(time(NULL));
     for(; maze[locationY][locationX] != ' ';)
     {
-            locationX = rand()%55;
-            locationY = rand()%34;
+        locationX = rand()%55;
+        locationY = rand()%34;
     }
         maze[locationY][locationX] = 's';
 }

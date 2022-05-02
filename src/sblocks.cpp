@@ -6,12 +6,12 @@ PhasableBlock::PhasableBlock()
     srand(time(NULL));
     while(1)
     {
-                locationX = rand()%55;
-                locationY = rand()%34;
-                if( maze[locationY][locationX] == '#' && ((maze[locationY][locationX - 1] == '#' && maze[locationY][locationX + 1] == '#' && maze[locationY - 1][locationX] == ' ' && maze[locationY + 1][locationX] == ' ') || (maze[locationY - 1][locationX] == '#' && maze[locationY + 1][locationX] == '#' && maze[locationY][locationX - 1] == ' ' && maze[locationY][locationX + 1] == ' ')))
-                break;
-                else
-                continue;
+        locationX = rand()%55;
+        locationY = rand()%34;
+        if( maze[locationY][locationX] == '#' && ((maze[locationY][locationX - 1] == '#' && maze[locationY][locationX + 1] == '#' && maze[locationY - 1][locationX] == ' ' && maze[locationY + 1][locationX] == ' ') || (maze[locationY - 1][locationX] == '#' && maze[locationY + 1][locationX] == '#' && maze[locationY][locationX - 1] == ' ' && maze[locationY][locationX + 1] == ' ')))
+        break;
+        else
+        continue;
 
     }
         maze[locationY][locationX] = '!';
@@ -35,24 +35,24 @@ FieryBlock::FieryBlock()
     srand(time(NULL));
     while(1)
     {
-                locationX = rand()%55;
-                locationY = rand()%34;
-                if( maze[locationY][locationX] == '#' && ((maze[locationY][locationX - 1] == '#' && maze[locationY][locationX + 1] == '#' && maze[locationY - 1][locationX] == ' ' && maze[locationY + 1][locationX] == ' ') || (maze[locationY - 1][locationX] == '#' && maze[locationY + 1][locationX] == '#' && maze[locationY][locationX - 1] == ' ' && maze[locationY][locationX + 1] == ' ')))
-                if( maze[locationY - 1][locationX] != '@' && maze[locationY + 1][locationX] != '@' && maze[locationY][locationX + 1] != '@' && maze[locationY][locationX - 1] != '@')
-                if( maze[locationY - 2][locationX] != '@' && maze[locationY + 2][locationX] != '@' && maze[locationY][locationX + 2] != '@' && maze[locationY][locationX - 2] != '@')
-                if( maze[locationY - 1][locationX - 1] != '@' && maze[locationY + 1][locationX + 1] != '@' && maze[locationY - 1][locationX + 1] != '@' && maze[locationY + 1][locationX - 1] != '@')
-                break;
+        locationX = rand()%55;
+        locationY = rand()%34;
+        if( maze[locationY][locationX] == '#' && ((maze[locationY][locationX - 1] == '#' && maze[locationY][locationX + 1] == '#' && maze[locationY - 1][locationX] == ' ' && maze[locationY + 1][locationX] == ' ') || (maze[locationY - 1][locationX] == '#' && maze[locationY + 1][locationX] == '#' && maze[locationY][locationX - 1] == ' ' && maze[locationY][locationX + 1] == ' ')))
+        if( maze[locationY - 1][locationX] != '@' && maze[locationY + 1][locationX] != '@' && maze[locationY][locationX + 1] != '@' && maze[locationY][locationX - 1] != '@')
+        if( maze[locationY - 2][locationX] != '@' && maze[locationY + 2][locationX] != '@' && maze[locationY][locationX + 2] != '@' && maze[locationY][locationX - 2] != '@')
+        if( maze[locationY - 1][locationX - 1] != '@' && maze[locationY + 1][locationX + 1] != '@' && maze[locationY - 1][locationX + 1] != '@' && maze[locationY + 1][locationX - 1] != '@')
+        break;
 
     }
-        maze[locationY][locationX] = 'F';
-        if(maze[locationY][locationX - 1] == '#')
-        maze[locationY][locationX - 1] = 'F';
-        else if(maze[locationY][locationX + 1] == '#')
-        maze[locationY][locationX + 1] = 'F';
-        else if(maze[locationY - 1][locationX] == '#')
-        maze[locationY - 1][locationX] = 'F';
-        else if(maze[locationY + 1][locationX] == '#')
-        maze[locationY + 1][locationX] = 'F';
+    maze[locationY][locationX] = 'F';
+    if(maze[locationY][locationX - 1] == '#')
+    maze[locationY][locationX - 1] = 'F';
+    else if(maze[locationY][locationX + 1] == '#')
+    maze[locationY][locationX + 1] = 'F';
+    else if(maze[locationY - 1][locationX] == '#')
+    maze[locationY - 1][locationX] = 'F';
+    else if(maze[locationY + 1][locationX] == '#')
+    maze[locationY + 1][locationX] = 'F';
 }
 
 void FieryBlock::Display(float beginX, float beginY, float blockWidth, float blockHeight, int i)
@@ -68,7 +68,7 @@ void FieryBlock::Display(float beginX, float beginY, float blockWidth, float blo
             glVertex2f(beginX , beginY - blockHeight);
             glVertex2f(beginX + blockWidth , beginY - blockHeight);
         glEnd();
-            BlinkArray[i] = 0;
+        BlinkArray[i] = 0;
     }
     else if(BlinkArray[i] == 2)
     {
@@ -99,22 +99,22 @@ Teleport::Teleport()
     srand(time(NULL));
     while(1)
     {
-                locationXF = rand()%55;
-                locationXT = rand()%55;
-                locationYF = rand()%34;
-                locationYT = rand()%34;
-                if( maze[locationYF][locationXF] == ' ' && maze[locationYT][locationXT] == ' ' && locationYF != locationYT && locationXF != locationXT)
-                if( maze[locationYF - 1][locationXF] != 'F' && maze[locationYF + 1][locationXF] != 'F' && maze[locationYF][locationXF + 1] != 'F' && maze[locationYF][locationXF - 1] != 'F')
-                if( maze[locationYF - 2][locationXF] != 'F' && maze[locationYF + 2][locationXF] != 'F' && maze[locationYF][locationXF + 2] != 'F' && maze[locationYF][locationXF - 2] != 'F')
-                if( maze[locationYT - 1][locationXT] != 'F' && maze[locationYT + 1][locationXT] != 'F' && maze[locationYT][locationXT + 1] != 'F' && maze[locationYT][locationXT - 1] != 'F')
-                if( maze[locationYT - 2][locationXT] != 'F' && maze[locationYT + 2][locationXT] != 'F' && maze[locationYT][locationXT + 2] != 'F' && maze[locationYT][locationXT - 2] != 'F')
-                if( maze[locationYF - 1][locationXF - 1] != 'F' && maze[locationYF + 1][locationXF + 1] != 'F' && maze[locationYF - 1][locationXF + 1] != 'F' && maze[locationYF + 1][locationXF - 1] != 'F')
-                if( maze[locationYT - 1][locationXT - 1] != 'F' && maze[locationYT + 1][locationXT + 1] != 'F' && maze[locationYT - 1][locationXT + 1] != 'F' && maze[locationYT + 1][locationXT - 1] != 'F')
-                break;
+        locationXF = rand()%55;
+        locationXT = rand()%55;
+        locationYF = rand()%34;
+        locationYT = rand()%34;
+        if( maze[locationYF][locationXF] == ' ' && maze[locationYT][locationXT] == ' ' && locationYF != locationYT && locationXF != locationXT)
+        if( maze[locationYF - 1][locationXF] != 'F' && maze[locationYF + 1][locationXF] != 'F' && maze[locationYF][locationXF + 1] != 'F' && maze[locationYF][locationXF - 1] != 'F')
+        if( maze[locationYF - 2][locationXF] != 'F' && maze[locationYF + 2][locationXF] != 'F' && maze[locationYF][locationXF + 2] != 'F' && maze[locationYF][locationXF - 2] != 'F')
+        if( maze[locationYT - 1][locationXT] != 'F' && maze[locationYT + 1][locationXT] != 'F' && maze[locationYT][locationXT + 1] != 'F' && maze[locationYT][locationXT - 1] != 'F')
+        if( maze[locationYT - 2][locationXT] != 'F' && maze[locationYT + 2][locationXT] != 'F' && maze[locationYT][locationXT + 2] != 'F' && maze[locationYT][locationXT - 2] != 'F')
+        if( maze[locationYF - 1][locationXF - 1] != 'F' && maze[locationYF + 1][locationXF + 1] != 'F' && maze[locationYF - 1][locationXF + 1] != 'F' && maze[locationYF + 1][locationXF - 1] != 'F')
+        if( maze[locationYT - 1][locationXT - 1] != 'F' && maze[locationYT + 1][locationXT + 1] != 'F' && maze[locationYT - 1][locationXT + 1] != 'F' && maze[locationYT + 1][locationXT - 1] != 'F')
+        break;
 
     }
-        maze[locationYF][locationXF] = 'T';
-        maze[locationYT][locationXT] = 'T';
+    maze[locationYF][locationXF] = 'T';
+    maze[locationYT][locationXT] = 'T';
 
 }
 
