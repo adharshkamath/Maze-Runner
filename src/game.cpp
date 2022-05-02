@@ -5,18 +5,14 @@
 #include <unistd.h>
 #include <string.h>
 #include "include/maze.h"
+#include "include/display.h"
 
 using namespace std;
 
 int GameCompletion = 0, WindowID, GameBegin = 0;
 
 int grid[HEIGHT][WIDTH];
-enum {n = 1,e = 4,s = 2,w = 8};
-int DX[9];
-int DY[9];
-int OPPOSITE[9];
 int mazeX, mazeY;
-
 
 char maze[35][56]=
 {{"+++++++++++++++++++++++++++++++++++++++++++++++++++++++"},
@@ -53,57 +49,6 @@ char maze[35][56]=
  {"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
  {"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
  {"+++++++++++++++++++++++++++++++++++++++++++++++++++++++"} };
-
-
-void clearWallInX(int locationX, int locationY)
-{
-    maze[locationY][locationX + 2] = ' ';
-    maze[locationY + 1][locationX + 2] = ' ';
-}
-
-
-void clearWallInY(int locationX, int locationY)
-{
-    maze[locationY + 2][locationX] = ' ';
-    maze[locationY + 2][locationX + 1] = ' ';
-}
-
-
-int shuffle_array(int *array, int size)
-{
-  int i;
-  for( i = 0; i < (size - 1); i++)
-  {
-    int r = i + (rand() % (size - i));
-    int temp = array[i];
-    array[i] = array[r];
-    array[r] = temp;
-  }
-  return 0;
-}
-
-
-int carve_passage(int cx, int cy, int grid[HEIGHT][WIDTH])
-{
-    int dx, dy, i;
-    int directions[4] = {n, e, s, w};
-    shuffle_array(directions, 4);
-    for(i = 0; i < 4; i++)
-    {
-     dx = DX[directions[i]];
-     dy = DY[directions[i]];
-     if ( ((cx + dx < WIDTH) & (cx + dx >= 0)) & ((cy + dy < HEIGHT) & (cy + dy >= 0)) )
-     {
-       if (grid[cy + dy][cx + dx] == 0)
-       {
-         grid[cy][cx] = (grid[cy][cx] | directions[i]);
-         grid[cy + dy][cx + dx] = (grid[cy + dy][cx + dx] | OPPOSITE[directions[i]]);
-         carve_passage(cx + dx, cy + dy, grid);
-       }
-     }
-    }
-    return 0;
-}
 
 
 int GenerateMaze()
@@ -145,94 +90,6 @@ int GenerateMaze()
   }
   return 0;
 
-}
-
-
-void display_LOSE()
-{
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glColor3f(1.0f, 1.0f, 1.0f);
-   glBegin(GL_LINE_STRIP);
-      glColor3f(1.0f, 1.0f, 1.0f);
-      glVertex2f(0.125f, -0.25f);
-      glVertex2f(0.375f, -0.25f);
-      glVertex2f(0.375f, 0.0f);
-      glVertex2f(0.125f, 0.0f);
-      glVertex2f(0.125f, 0.25f);
-      glVertex2f(0.375f, 0.25f);
-   glEnd();
-
-   glBegin(GL_LINE_STRIP);
-      glColor3f(1.0f, 1.0f, 1.0f);
-      glVertex2f(0.875f, -0.25f);
-      glVertex2f(0.625f, -0.25f);
-      glVertex2f(0.625f, 0.25f);
-      glVertex2f(0.875f, 0.25f);
-
-   glEnd();
-
-   glBegin(GL_LINES);
-      glColor3f(1.0f, 1.0f, 1.0f);
-      glVertex2f(0.875f, 0.0f);
-      glVertex2f(0.625f, 0.0f);
-   glEnd();
-
-   glBegin(GL_LINE_LOOP);
-      glColor3f(1.0f, 1.0f, 1.0f);
-      glVertex2f(-0.125f, -0.25f);
-      glVertex2f(-0.375f, -0.25f);
-      glVertex2f(-0.375f, 0.25f);
-      glVertex2f(-0.125f, 0.25f);
-   glEnd();
-
-   glBegin(GL_LINE_STRIP);
-      glColor3f(1.0f, 1.0f, 1.0f);
-      glVertex2f(-0.625f, -0.25f);
-      glVertex2f(-0.875f, -0.25f);
-      glVertex2f(-0.875f, 0.25f);
-   glEnd();
-
-   glFlush();
-}
-
-
-void display_WIN()
-{
-    glClearColor(0.20f, 0.20f, 0.20f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glColor3f(1.0f, 1.0f, 1.0f);
-   glBegin(GL_LINE_STRIP);
-      glColor3f(1.0f, 1.0f, 1.0f);
-      glVertex2f(0.15f, -0.25f);
-      glVertex2f(0.15f, 0.25f);
-   glEnd();
-
-   glBegin(GL_LINE_STRIP);
-      glColor3f(1.0f, 1.0f, 1.0f);
-      glVertex2f(0.4f, -0.25f);
-      glVertex2f(0.4f, 0.25f);
-      glVertex2f(0.7f, -0.25f);
-      glVertex2f(0.7f, 0.25f);
-
-   glEnd();
-
-   glBegin(GL_LINE_STRIP);
-      glColor3f(1.0f, 1.0f, 1.0f);
-      glVertex2f(-0.1f, 0.25f);
-      glVertex2f(-0.25f, -0.25f);
-      glVertex2f(-0.4f, 0.25f);
-      glVertex2f(-0.55f, -0.25f);
-      glVertex2f(-0.7f, 0.25f);
-   glEnd();
-
-   glFlush();
-}
-
-
-void initGL()
-{
-   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 
@@ -1107,14 +964,13 @@ void specialkey_playing(int key, int xr, int yr)
 }
 
 
-void renderbitmap(float x, float y, void *font, char *string)
-{
-  char *c;
-  glRasterPos2f(x,y);
-  for( c = string; *c != '\0'; c++)
-    glutBitmapCharacter( font, *c);
-
-}
+// void renderbitmap(float x, float y, void *font, char *string)
+// {
+//   char *c;
+//   glRasterPos2f(x,y);
+//   for( c = string; *c != '\0'; c++)
+//     glutBitmapCharacter( font, *c);
+// }
 
 
 void display_Home()
