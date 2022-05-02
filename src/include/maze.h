@@ -15,6 +15,11 @@
 #define WEIGHT_H 56
 #define HEIGHT_H 35
 
+#include <iostream>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+
 extern char maze[HEIGHT_H][WEIGHT_H];
 extern int grid[HEIGHT][WIDTH];
 enum {n = 1,e = 4,s = 2,w = 8};

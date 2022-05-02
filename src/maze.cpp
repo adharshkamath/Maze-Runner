@@ -1,7 +1,3 @@
-#include <iostream>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
 #include "include/maze.h"
 
 int DX[9];
