@@ -15,7 +15,7 @@
 
 using namespace std;
 
-int GameCompletion = 0, WindowID, GameBegin = 0, trollFrameCount = 0, TeleportLocationFixed = 1, firstKeyPressed = 0;
+int GameCompletion = 0, WindowID, GameBegin = 0, trollFrameCount = 0, TeleportLocationFixed = 1, firstKeyPressed = 0, AnimDone = 0;
 
 int grid[HEIGHT][WIDTH];
 int mazeX, mazeY;
@@ -378,6 +378,10 @@ int main(int argc, char** argv)
     srand(time(NULL));
 
     glutInit(&argc, argv);
+
+    for(auto x: path) {
+        cout << x.first << " " << x.second << endl;
+    }
 
     WindowID = glutCreateWindow("Maze Runner");
 

@@ -15,5 +15,6 @@ void display_WIN();
 void display_maze();
 void display_Home();
 void display();
+void animate_maze_static();
 
 #endif

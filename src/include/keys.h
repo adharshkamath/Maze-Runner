@@ -4,7 +4,7 @@
 #include <GL/glut.h>
 #include <iostream>
 
-extern int GameCompletion, GameBegin, WindowID;
+extern int GameCompletion, GameBegin, WindowID, AnimDone;
 
 void processNormalKeysForHome(unsigned char key, int x, int y);
 void processNormalKeys(unsigned char key, int x, int y);

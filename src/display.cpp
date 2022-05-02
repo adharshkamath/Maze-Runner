@@ -7,6 +7,42 @@
 #include "include/sblocks.h"
 #include "include/exits.h"
 
+char anim_maze[35][56] =
+	{{"+++++++++++++++++++++++++++++++++++++++++++++++++++++++"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+#####################################################+"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+#####################################################+"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+#####################################################+"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+#####################################################+"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+#####################################################+"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+#####################################################+"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+#####################################################+"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+#####################################################+"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+#####################################################+"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+#####################################################+"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  +"},
+	{"+++++++++++++++++++++++++++++++++++++++++++++++++++++++"} };
+
 void renderbitmap(float x, float y, void *font, char *string)
 {
 	char *c;
@@ -251,22 +287,86 @@ void display()
 	{
 		display_Home();
 	}
-	else if (GameCompletion == 0 && GameBegin == 1)
+	else if(GameCompletion == 0 && GameBegin == 1 && AnimDone == 0) {
+		animate_maze_static();
+	}
+	else if (GameCompletion == 0 && GameBegin == 1 && AnimDone == 1)
 	{
 		glFlush();
 		glutPostRedisplay();
 		display_maze();
 	}
-	else if (GameCompletion == 1 && GameBegin == 1)
+	else if (GameCompletion == 1 && GameBegin == 1 && AnimDone == 1)
 	{
-
 		usleep(50000);
 		display_WIN();
 	}
-	else if (GameCompletion == -1 && GameBegin == 1)
+	else if (GameCompletion == -1 && GameBegin == 1 && AnimDone == 1)
 	{
-
 		usleep(50000);
 		display_LOSE();
 	}
 }
+
+void animate_maze_static() {
+
+	glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glutFullScreen();
+
+	double blockWidth = 2.0 / 61.0;
+	double blockHeight = 1.5 / 34.0;
+	float beginX = -0.9f;
+	float beginY = 0.725f;
+	static int counter = 0;
+
+	if((grid[path[counter].first][path[counter].second] & 2) != 0)
+	{
+		anim_maze[(3 * path[counter].first) + 3][(3 * path[counter].second) + 1] = ' ';
+		anim_maze[(3 * path[counter].first) + 3][(3 * path[counter].second) + 2] = ' ';
+	}
+	if((grid[path[counter].first][path[counter].second] & 4) != 0)
+	{
+		anim_maze[(3 * path[counter].first) + 1][(3 * path[counter].second) + 3] = ' ';
+		anim_maze[(3 * path[counter].first) + 2][(3 * path[counter].second) + 3] = ' ';
+	}
+	counter++;
+	usleep(55000);
+	if(counter == path.size()) { usleep(450000); AnimDone = 1; }
+	for (int i = 0; i < 34; i++)
+	{
+		for (int j = 0; j < 55; j++)
+		{
+			if (anim_maze[i][j] == '#' || anim_maze[i][j] == '+' || 
+				anim_maze[i][j] == 'X' ||
+				anim_maze[i][j] == 'F' || anim_maze[i][j] == '!')
+			{
+				glBegin(GL_QUADS);
+				glColor3f(1.0f, 1.0f, 1.0f);
+				glVertex2f(beginX + blockWidth, beginY);
+				glVertex2f(beginX, beginY);
+				glVertex2f(beginX, beginY - blockHeight);
+				glVertex2f(beginX + blockWidth, beginY - blockHeight);
+				glEnd();
+			}
+
+			else
+			{
+				glBegin(GL_QUADS);
+				glColor3f(0.5f, 0.5f, 0.5f);
+				glVertex2f(beginX + blockWidth, beginY);
+				glVertex2f(beginX, beginY);
+				glVertex2f(beginX, beginY - blockHeight);
+				glVertex2f(beginX + blockWidth, beginY - blockHeight);
+				glEnd();
+			}
+
+			beginX += blockWidth;
+		}
+		beginY -= blockHeight;
+		beginX = -0.9f;
+	}
+	glFlush();
+	glutPostRedisplay();
+}
+

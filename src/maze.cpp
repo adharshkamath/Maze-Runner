@@ -3,6 +3,7 @@
 int DX[9];
 int DY[9];
 int OPPOSITE[9];
+vector<pair<int, int>> path;
 
 char maze[35][56]=
 {{"+++++++++++++++++++++++++++++++++++++++++++++++++++++++"},
@@ -46,7 +47,6 @@ void clearWallInX(int locationX, int locationY)
     maze[locationY + 1][locationX + 2] = ' ';
 }
 
-
 void clearWallInY(int locationX, int locationY)
 {
     maze[locationY + 2][locationX] = ' ';
@@ -81,6 +81,7 @@ int carve_passage(int cx, int cy, int grid[HEIGHT][WIDTH])
             {
                 grid[cy][cx] = (grid[cy][cx] | directions[i]);
                 grid[cy + dy][cx + dx] = (grid[cy + dy][cx + dx] | OPPOSITE[directions[i]]);
+                path.push_back(make_pair(cy, cx));
                 carve_passage(cx + dx, cy + dy, grid);
             }
         }

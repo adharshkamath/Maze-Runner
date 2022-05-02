@@ -19,13 +19,18 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <vector>
+#include <utility>
+
+using namespace std;
 
 extern char maze[HEIGHT_H][WEIGHT_H];
 extern int grid[HEIGHT][WIDTH];
-enum {n = 1,e = 4,s = 2,w = 8};
+enum {n = 1, s = 2, e = 4, w = 8};
 extern int DX[9];
 extern int DY[9];
 extern int OPPOSITE[9];
+extern vector<pair<int, int>> path;
 
 void clearWallInX(int locationX, int locationY);
 void clearWallInY(int locationX, int locationY);
