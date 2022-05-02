@@ -6,6 +6,7 @@
 #include <string.h>
 #include "include/maze.h"
 #include "include/display.h"
+#include "include/keys.h"
 
 using namespace std;
 
@@ -111,7 +112,6 @@ class Player
     }
 
 };
-
 
 int Player::SpeedBoost = 0;
 int Player::Armed = 0;
@@ -1017,28 +1017,6 @@ void specialFunc(int key, int v, int c)
             specialkey_playing(key,v,c);
             firstKeyPressed = 1;
         }
-}
-
-
-void processNormalKeysForHome(unsigned char key, int x, int y)
-{
-     if(key > 0 && key != 27)
-		{
-            GameBegin = 1;
-            glutPostRedisplay();
-            glFlush();
-        }
-     else if(key == 27)
-     {
-         glutDestroyWindow(WindowID);
-     }
-}
-
-
-void processNormalKeys(unsigned char key, int x, int y)
-{
-    if (key > 0)
-		glutDestroyWindow(WindowID);
 }
 
 
