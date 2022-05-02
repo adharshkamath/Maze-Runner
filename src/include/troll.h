@@ -3,6 +3,10 @@
 
 #include <GL/glut.h>
 #include <stdlib.h>
+#include "maze.h"
+#include "player.h"
+
+extern int GameCompletion;
 
 class Troll
 {
@@ -11,5 +15,8 @@ class Troll
     Troll();
     static void Display(float beginX, float beginY, float blockWidth, float blockHeight);
 };
+
+
+void troll(Troll T[TROLL_NUMBER], Player P);
 
 #endif
