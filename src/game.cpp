@@ -379,10 +379,6 @@ int main(int argc, char** argv)
 
     glutInit(&argc, argv);
 
-    for(auto x: path) {
-        cout << x.first << " " << x.second << endl;
-    }
-
     WindowID = glutCreateWindow("Maze Runner");
 
     glutDisplayFunc(display);
